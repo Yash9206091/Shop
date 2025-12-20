@@ -6,6 +6,12 @@
     <title>Kirana Manager - Smart Store Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Firebase SDK v9 -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -39,7 +45,7 @@
             overflow-x: hidden;
         }
 
-        /* Login Screen */
+        /* Login/Register Screen */
         #login-screen {
             display: flex;
             flex-direction: column;
@@ -141,6 +147,22 @@
             margin-top: 30px;
             color: var(--gray);
             font-size: 0.9rem;
+        }
+
+        .register-link {
+            margin-top: 20px;
+            color: var(--primary);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: var(--danger);
+            background-color: rgba(239, 68, 68, 0.1);
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 20px;
+            display: none;
         }
 
         /* Main App (hidden initially) */
@@ -785,6 +807,58 @@
             font-size: 1.2rem;
             margin-left: 15px;
         }
+        
+        /* Loader */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Setup Instructions */
+        .setup-instructions {
+            background-color: #fff8e1;
+            border-left: 5px solid #ff9800;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: var(--radius-sm);
+        }
+        
+        .setup-instructions h4 {
+            color: #e65100;
+            margin-bottom: 10px;
+        }
+        
+        .setup-instructions ol {
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .setup-instructions li {
+            margin-bottom: 5px;
+        }
+        
+        .demo-credentials {
+            background-color: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: var(--radius-sm);
+        }
+        
+        .demo-credentials h4 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -800,25 +874,72 @@
             
             <div class="login-title">Sign in to Your Store</div>
             
+            <div class="error-message" id="login-error"></div>
+            
             <form class="login-form" id="login-form">
                 <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <input type="text" class="form-input" id="username" placeholder="Enter username" required>
+                    <label class="form-label">Email *</label>
+                    <input type="email" class="form-input" id="login-email" placeholder="Enter your email" required>
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="password" placeholder="Enter password" required>
+                    <label class="form-label">Password *</label>
+                    <input type="password" class="form-input" id="login-password" placeholder="Enter password" required minlength="6">
                 </div>
                 
-                <button type="submit" class="login-btn">
+                <button type="submit" class="login-btn" id="login-submit-btn">
                     <i class="fas fa-sign-in-alt"></i> Sign In
                 </button>
+                
+                <div class="register-link" id="show-register">
+                    Don't have an account? Register here
+                </div>
             </form>
             
+            <form class="login-form" id="register-form" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label">Store Name *</label>
+                    <input type="text" class="form-input" id="register-store-name" placeholder="Enter store name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Owner Name *</label>
+                    <input type="text" class="form-input" id="register-owner-name" placeholder="Enter owner name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email *</label>
+                    <input type="email" class="form-input" id="register-email" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password *</label>
+                    <input type="password" class="form-input" id="register-password" placeholder="Enter password (min 6 characters)" required minlength="6">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Confirm Password *</label>
+                    <input type="password" class="form-input" id="register-confirm-password" placeholder="Confirm password" required minlength="6">
+                </div>
+                
+                <button type="submit" class="login-btn" id="register-submit-btn">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+                
+                <div class="register-link" id="show-login">
+                    Already have an account? Sign in here
+                </div>
+            </form>
+            
+            <div class="demo-credentials">
+                <h4>Demo Credentials</h4>
+                <p><strong>Email:</strong> demo@kirana.com</p>
+                <p><strong>Password:</strong> kirana123</p>
+                <p style="margin-top: 10px; font-size: 0.8rem;">Use these credentials for testing or click "Register here" to create your own account</p>
+            </div>
+            
             <div class="login-footer">
-                <p>Default: username: <strong>admin</strong>, password: <strong>password</strong></p>
-                <p style="margin-top: 10px; font-size: 0.8rem;">For Kirana store owners • Simple inventory management</p>
+                <p>For Kirana store owners • Smart inventory management</p>
             </div>
         </div>
     </div>
@@ -831,13 +952,13 @@
                 <div class="logo-icon">
                     <i class="fas fa-store"></i>
                 </div>
-                <span>Kirana Manager</span>
+                <span id="store-name-header">Kirana Manager</span>
             </div>
             <div class="user-profile">
-                <div class="user-avatar">SK</div>
+                <div class="user-avatar" id="user-avatar">SK</div>
                 <div>
-                    <div style="font-weight: 600;">Suresh Kirana</div>
-                    <div style="font-size: 0.8rem;">Store Owner</div>
+                    <div id="owner-name-header" style="font-weight: 600;">Store Owner</div>
+                    <div id="user-email" style="font-size: 0.8rem;">Loading...</div>
                 </div>
                 <button class="logout-btn" id="logout-btn" title="Logout">
                     <i class="fas fa-sign-out-alt"></i>
@@ -951,11 +1072,7 @@
                 </div>
                 
                 <div id="inventory-items" class="product-list">
-                    <div class="empty-state">
-                        <i class="fas fa-box-open empty-state-icon"></i>
-                        <div class="empty-state-title">No products yet</div>
-                        <p>Add your first product using the "+" button below</p>
-                    </div>
+                    <div class="loader" id="inventory-loader"></div>
                 </div>
                 
                 <button class="btn btn-primary btn-block" id="add-manual-btn">
@@ -1185,22 +1302,22 @@
                     
                     <div class="form-group">
                         <label class="form-label">Store Name</label>
-                        <input type="text" class="form-input" id="store-name" value="Suresh Kirana Store">
+                        <input type="text" class="form-input" id="store-name" value="My Kirana Store">
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label">Owner Name</label>
-                        <input type="text" class="form-input" id="owner-name" value="Suresh Kumar">
+                        <input type="text" class="form-input" id="owner-name" value="Store Owner">
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label">Store Address</label>
-                        <textarea class="form-input" id="store-address" rows="3">123, Main Market, Gandhi Road, Hyderabad</textarea>
+                        <textarea class="form-input" id="store-address" rows="3">Enter your store address</textarea>
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label">GST Number</label>
-                        <input type="text" class="form-input" id="gst-number" value="22ABCDE1234F1Z5">
+                        <input type="text" class="form-input" id="gst-number" value="22XXXXX1234X1X5">
                     </div>
                     
                     <button class="btn btn-primary btn-block" id="save-store-info">
@@ -1270,19 +1387,6 @@
             </div>
         </div>
         
-        <!-- Modal for updating stock quantity -->
-        <div class="modal" id="update-stock-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title">Update Stock Quantity</div>
-                    <button class="close-modal" id="close-stock-modal">&times;</button>
-                </div>
-                <div id="update-stock-body">
-                    <!-- Update stock form will be dynamically added here -->
-                </div>
-            </div>
-        </div>
-        
         <!-- Bottom Navigation -->
         <div class="bottom-nav">
             <button class="nav-item active" data-screen="home-screen">
@@ -1317,101 +1421,457 @@
     </div>
 
     <script>
+        // Firebase Configuration - Your Firebase Project
+        const firebaseConfig = {
+            apiKey: "AIzaSyDgI7ZANjk83BpgQecR8m6qwBYO4eQ-4nY",
+            authDomain: "kirana-shop-d71b9.firebaseapp.com",
+            databaseURL: "https://kirana-shop-d71b9-default-rtdb.firebaseio.com",
+            projectId: "kirana-shop-d71b9",
+            storageBucket: "kirana-shop-d71b9.firebasestorage.app",
+            messagingSenderId: "414947666204",
+            appId: "1:414947666204:web:234289377116cad01732d9",
+            measurementId: "G-15L7X1V4J2"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const auth = firebase.auth();
+
         // Main App State
         const KiranaApp = {
             // Chart instances
             charts: {},
             
-            // Initialize app data
-            init: function() {
-                // Check if user is already logged in
-                if (localStorage.getItem('kiranaLoggedIn') === 'true') {
-                    this.showMainApp();
-                } else {
-                    this.showLoginScreen();
-                }
-                
-                this.setupEventListeners();
-                this.updateCurrentDate();
-            },
+            // Current user data
+            currentUser: null,
+            userId: null,
             
-            // Data storage
+            // Demo mode flag
+            demoMode: false,
+            
+            // App data structure
             data: {
                 products: [],
                 sales: [],
                 storeInfo: {
-                    name: "Suresh Kirana Store",
-                    owner: "Suresh Kumar",
-                    address: "123, Main Market, Gandhi Road, Hyderabad",
-                    gst: "22ABCDE1234F1Z5"
+                    name: "My Kirana Store",
+                    owner: "Store Owner",
+                    address: "Enter your store address",
+                    gst: "22XXXXX1234X1X5",
+                    email: ""
                 }
             },
             
-            // Load data from localStorage
-            loadData: function() {
-                const savedData = localStorage.getItem('kiranaAppData');
-                if (savedData) {
-                    this.data = JSON.parse(savedData);
-                } else {
-                    // Start with empty data
-                    this.data = {
-                        products: [],
-                        sales: [],
-                        storeInfo: {
-                            name: "Suresh Kirana Store",
-                            owner: "Suresh Kumar",
-                            address: "123, Main Market, Gandhi Road, Hyderabad",
-                            gst: "22ABCDE1234F1Z5"
+            // Initialize app
+            init: function() {
+                // Show setup instructions if needed
+                this.checkFirebaseSetup();
+                
+                this.setupEventListeners();
+                this.updateCurrentDate();
+                
+                // Check if user is already logged in
+                this.checkAuthState();
+            },
+            
+            // Check Firebase Authentication setup
+            checkFirebaseSetup: function() {
+                // Check if we can connect to Firebase
+                const testRef = database.ref('.info/connected');
+                testRef.on('value', (snapshot) => {
+                    if (snapshot.val() === true) {
+                        console.log('Firebase Realtime Database connected');
+                    } else {
+                        console.log('Firebase Realtime Database not connected');
+                    }
+                });
+            },
+            
+            // Check authentication state
+            checkAuthState: function() {
+                auth.onAuthStateChanged((user) => {
+                    if (user) {
+                        console.log('User is signed in:', user.email);
+                        this.currentUser = user;
+                        this.userId = user.uid;
+                        this.showMainApp();
+                        this.loadUserData();
+                    } else {
+                        console.log('No user signed in');
+                        this.showLoginScreen();
+                        
+                        // Check for demo mode
+                        if (localStorage.getItem('kiranaDemoMode') === 'true') {
+                            this.enableDemoMode();
                         }
-                    };
-                    this.saveData();
+                    }
+                }, (error) => {
+                    console.error('Auth state change error:', error);
+                    this.showLoginScreen();
+                    
+                    // If Firebase auth fails, enable demo mode
+                    if (error.code === 'auth/network-request-failed' || 
+                        error.code === 'auth/internal-error' ||
+                        error.message.includes('auth/')) {
+                        this.enableDemoMode();
+                    }
+                });
+            },
+            
+            // Enable demo mode (fallback when Firebase auth fails)
+            enableDemoMode: function() {
+                this.demoMode = true;
+                this.userId = 'demo-user';
+                this.currentUser = { email: 'demo@kirana.com', uid: 'demo-user' };
+                
+                // Create demo data structure
+                this.data.storeInfo = {
+                    name: "Demo Kirana Store",
+                    owner: "Demo User",
+                    address: "123 Demo Street, Demo City",
+                    gst: "22DEMO1234D1M0",
+                    email: "demo@kirana.com"
+                };
+                
+                // Load demo data from localStorage
+                this.loadDemoData();
+                
+                // Show main app in demo mode
+                this.showMainApp();
+                this.showNotification('Demo Mode', 'Using demo mode. Data is stored locally.', 'info');
+            },
+            
+            // Load demo data from localStorage
+            loadDemoData: function() {
+                const demoData = localStorage.getItem('kiranaDemoData');
+                if (demoData) {
+                    try {
+                        const parsedData = JSON.parse(demoData);
+                        this.data.products = parsedData.products || [];
+                        this.data.sales = parsedData.sales || [];
+                        if (parsedData.storeInfo) {
+                            this.data.storeInfo = { ...this.data.storeInfo, ...parsedData.storeInfo };
+                        }
+                    } catch (e) {
+                        console.error('Error loading demo data:', e);
+                    }
                 }
             },
             
-            // Save data to localStorage
-            saveData: function() {
-                localStorage.setItem('kiranaAppData', JSON.stringify(this.data));
+            // Save demo data to localStorage
+            saveDemoData: function() {
+                if (!this.demoMode) return;
+                
+                const demoData = {
+                    products: this.data.products,
+                    sales: this.data.sales,
+                    storeInfo: this.data.storeInfo
+                };
+                
+                localStorage.setItem('kiranaDemoData', JSON.stringify(demoData));
+                localStorage.setItem('kiranaDemoMode', 'true');
+            },
+            
+            // Load user data from Firebase
+            loadUserData: function() {
+                if (this.demoMode) {
+                    this.updateUserInfo();
+                    this.renderHomeScreen();
+                    this.renderInventoryScreen();
+                    this.renderSalesScreen();
+                    this.renderInsightsScreen();
+                    return;
+                }
+                
+                if (!this.userId) return;
+                
+                // Load store info
+                database.ref(`users/${this.userId}/storeInfo`).once('value')
+                    .then((snapshot) => {
+                        if (snapshot.exists()) {
+                            this.data.storeInfo = snapshot.val();
+                        }
+                        // Update UI with user info
+                        this.updateUserInfo();
+                    })
+                    .catch((error) => {
+                        console.error("Error loading store info:", error);
+                        this.updateUserInfo();
+                    });
+                
+                // Load products
+                this.loadProducts();
+                
+                // Load sales
+                this.loadSales();
+            },
+            
+            // Load products from Firebase
+            loadProducts: function() {
+                if (this.demoMode) {
+                    // Products are already loaded from localStorage
+                    return;
+                }
+                
+                if (!this.userId) return;
+                
+                database.ref(`users/${this.userId}/products`).on('value', (snapshot) => {
+                    this.data.products = [];
+                    if (snapshot.exists()) {
+                        const productsData = snapshot.val();
+                        Object.keys(productsData).forEach((key) => {
+                            this.data.products.push({
+                                id: key,
+                                ...productsData[key]
+                            });
+                        });
+                    }
+                    this.renderInventoryScreen();
+                    this.renderHomeScreen();
+                    this.renderSalesScreen();
+                }, (error) => {
+                    console.error("Error loading products:", error);
+                });
+            },
+            
+            // Load sales from Firebase
+            loadSales: function() {
+                if (this.demoMode) {
+                    // Sales are already loaded from localStorage
+                    return;
+                }
+                
+                if (!this.userId) return;
+                
+                database.ref(`users/${this.userId}/sales`).on('value', (snapshot) => {
+                    this.data.sales = [];
+                    if (snapshot.exists()) {
+                        const salesData = snapshot.val();
+                        Object.keys(salesData).forEach((key) => {
+                            this.data.sales.push({
+                                id: key,
+                                ...salesData[key]
+                            });
+                        });
+                    }
+                    this.renderSalesScreen();
+                    this.renderHomeScreen();
+                }, (error) => {
+                    console.error("Error loading sales:", error);
+                });
             },
             
             // Show login screen
             showLoginScreen: function() {
                 document.getElementById('login-screen').style.display = 'flex';
                 document.getElementById('main-app').style.display = 'none';
+                document.getElementById('login-form').style.display = 'block';
+                document.getElementById('register-form').style.display = 'none';
+                document.getElementById('login-error').style.display = 'none';
             },
             
             // Show main app
             showMainApp: function() {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
-                this.loadData();
-                this.renderHomeScreen();
-                this.renderInventoryScreen();
-                this.renderSalesScreen();
-                this.renderInsightsScreen();
                 this.setupCharts();
+                this.updateUserInfo();
                 
                 // Show welcome message
                 setTimeout(() => {
-                    this.showNotification('Welcome to Kirana Manager!', 'Start by adding your first product.', 'info');
+                    const message = this.demoMode 
+                        ? 'Welcome to Demo Mode! Add products and make sales to test the app.' 
+                        : 'Welcome to Kirana Manager! Start by adding your first product.';
+                    this.showNotification('Welcome!', message, 'info');
                 }, 1000);
             },
             
-            // Handle login
-            handleLogin: function(username, password) {
-                // Default credentials
-                if (username === 'admin' && password === 'password') {
-                    localStorage.setItem('kiranaLoggedIn', 'true');
-                    this.showMainApp();
-                    return true;
-                } else {
-                    return false;
+            // Handle user registration
+            handleRegister: function(storeName, ownerName, email, password) {
+                // Show loading state
+                const registerBtn = document.getElementById('register-submit-btn');
+                const originalText = registerBtn.innerHTML;
+                registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+                registerBtn.disabled = true;
+                
+                // Create user with Firebase Authentication
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+                        
+                        // Create user data in Realtime Database
+                        const userData = {
+                            storeInfo: {
+                                name: storeName,
+                                owner: ownerName,
+                                email: email,
+                                address: "Enter your store address",
+                                gst: "22XXXXX1234X1X5"
+                            },
+                            products: {},
+                            sales: {}
+                        };
+                        
+                        return database.ref(`users/${user.uid}`).set(userData);
+                    })
+                    .then(() => {
+                        this.showNotification('Account Created', 'Your account has been created successfully!', 'success');
+                        
+                        // Reset form
+                        document.getElementById('register-form').reset();
+                        
+                        // Switch to login form
+                        document.getElementById('register-form').style.display = 'none';
+                        document.getElementById('login-form').style.display = 'block';
+                    })
+                    .catch((error) => {
+                        console.error('Registration error:', error);
+                        let errorMessage = "Registration failed. Please try again.";
+                        
+                        if (error.code === 'auth/email-already-in-use') {
+                            errorMessage = "Email is already registered.";
+                        } else if (error.code === 'auth/weak-password') {
+                            errorMessage = "Password should be at least 6 characters.";
+                        } else if (error.code === 'auth/invalid-email') {
+                            errorMessage = "Invalid email address.";
+                        } else if (error.code === 'auth/operation-not-allowed') {
+                            errorMessage = "Email/password accounts are not enabled. Please enable Firebase Authentication in your project settings.";
+                        } else if (error.code === 'auth/network-request-failed') {
+                            errorMessage = "Network error. Please check your internet connection.";
+                        } else if (error.code === 'auth/too-many-requests') {
+                            errorMessage = "Too many requests. Please try again later.";
+                        }
+                        
+                        this.showLoginError(errorMessage);
+                        
+                        // If Firebase auth fails, suggest demo mode
+                        if (error.code.includes('auth/')) {
+                            setTimeout(() => {
+                                if (confirm('Having trouble with registration? Would you like to use Demo Mode instead?')) {
+                                    this.useDemoCredentials();
+                                }
+                            }, 1500);
+                        }
+                    })
+                    .finally(() => {
+                        // Reset button state
+                        registerBtn.innerHTML = originalText;
+                        registerBtn.disabled = false;
+                    });
+            },
+            
+            // Handle user login
+            handleLogin: function(email, password) {
+                // Show loading state
+                const loginBtn = document.getElementById('login-submit-btn');
+                const originalText = loginBtn.innerHTML;
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+                loginBtn.disabled = true;
+                
+                // Check for demo credentials
+                if (email === 'demo@kirana.com' && password === 'kirana123') {
+                    // Use demo mode
+                    setTimeout(() => {
+                        this.enableDemoMode();
+                        loginBtn.innerHTML = originalText;
+                        loginBtn.disabled = false;
+                    }, 1000);
+                    return;
                 }
+                
+                // Sign in with Firebase Authentication
+                auth.signInWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        // Success - auth state listener will handle the rest
+                        document.getElementById('login-form').reset();
+                        document.getElementById('login-error').style.display = 'none';
+                    })
+                    .catch((error) => {
+                        console.error('Login error:', error);
+                        let errorMessage = "Login failed. Please check your credentials.";
+                        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                            errorMessage = "Invalid email or password.";
+                        } else if (error.code === 'auth/too-many-requests') {
+                            errorMessage = "Too many failed attempts. Please try again later.";
+                        } else if (error.code === 'auth/network-request-failed') {
+                            errorMessage = "Network error. Please check your internet connection.";
+                        } else if (error.code === 'auth/internal-error') {
+                            errorMessage = "Server error. Please try again later.";
+                        } else if (error.code === 'auth/operation-not-allowed') {
+                            errorMessage = "Email/password accounts are not enabled. Please enable Firebase Authentication in your project settings.";
+                        }
+                        
+                        this.showLoginError(errorMessage);
+                        
+                        // Suggest demo mode on auth errors
+                        if (error.code.includes('auth/')) {
+                            setTimeout(() => {
+                                if (confirm('Having trouble logging in? Would you like to use Demo Mode instead?')) {
+                                    this.useDemoCredentials();
+                                }
+                            }, 1500);
+                        }
+                    })
+                    .finally(() => {
+                        // Reset button state
+                        loginBtn.innerHTML = originalText;
+                        loginBtn.disabled = false;
+                    });
+            },
+            
+            // Use demo credentials
+            useDemoCredentials: function() {
+                document.getElementById('login-email').value = 'demo@kirana.com';
+                document.getElementById('login-password').value = 'kirana123';
+                document.getElementById('login-error').style.display = 'none';
             },
             
             // Handle logout
             handleLogout: function() {
-                localStorage.removeItem('kiranaLoggedIn');
-                this.showLoginScreen();
+                if (this.demoMode) {
+                    this.demoMode = false;
+                    localStorage.removeItem('kiranaDemoMode');
+                    this.showLoginScreen();
+                    this.showNotification('Logged Out', 'Demo session ended.', 'info');
+                    return;
+                }
+                
+                auth.signOut()
+                    .then(() => {
+                        this.showNotification('Logged Out', 'You have been signed out successfully.', 'info');
+                    })
+                    .catch((error) => {
+                        console.error("Logout error:", error);
+                        this.showNotification('Error', 'Failed to logout. Please try again.', 'danger');
+                    });
+            },
+            
+            // Show login error
+            showLoginError: function(message) {
+                const errorElement = document.getElementById('login-error');
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            },
+            
+            // Update user info in UI
+            updateUserInfo: function() {
+                // Update avatar with first letter of store name
+                const storeName = this.data.storeInfo.name || 'SK';
+                document.getElementById('user-avatar').textContent = storeName.charAt(0).toUpperCase();
+                
+                // Update header info
+                document.getElementById('store-name-header').textContent = this.data.storeInfo.name || 'Kirana Manager';
+                document.getElementById('owner-name-header').textContent = this.data.storeInfo.owner || 'Store Owner';
+                document.getElementById('user-email').textContent = this.currentUser ? this.currentUser.email : 'demo@kirana.com';
+            },
+            
+            // Update profile UI
+            updateProfileUI: function() {
+                document.getElementById('store-name').value = this.data.storeInfo.name || '';
+                document.getElementById('owner-name').value = this.data.storeInfo.owner || '';
+                document.getElementById('store-address').value = this.data.storeInfo.address || '';
+                document.getElementById('gst-number').value = this.data.storeInfo.gst || '';
             },
             
             // Setup event listeners
@@ -1419,15 +1879,59 @@
                 // Login form
                 document.getElementById('login-form').addEventListener('submit', (e) => {
                     e.preventDefault();
-                    const username = document.getElementById('username').value;
-                    const password = document.getElementById('password').value;
+                    const email = document.getElementById('login-email').value;
+                    const password = document.getElementById('login-password').value;
                     
-                    if (this.handleLogin(username, password)) {
-                        document.getElementById('username').value = '';
-                        document.getElementById('password').value = '';
-                    } else {
-                        this.showNotification('Login Failed', 'Invalid username or password', 'danger');
+                    if (email && password) {
+                        this.handleLogin(email, password);
                     }
+                });
+                
+                // Register form
+                document.getElementById('register-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const storeName = document.getElementById('register-store-name').value;
+                    const ownerName = document.getElementById('register-owner-name').value;
+                    const email = document.getElementById('register-email').value;
+                    const password = document.getElementById('register-password').value;
+                    const confirmPassword = document.getElementById('register-confirm-password').value;
+                    
+                    // Validation
+                    if (!storeName || !ownerName || !email || !password || !confirmPassword) {
+                        this.showLoginError('Please fill all fields.');
+                        return;
+                    }
+                    
+                    if (password !== confirmPassword) {
+                        this.showLoginError('Passwords do not match.');
+                        return;
+                    }
+                    
+                    if (password.length < 6) {
+                        this.showLoginError('Password must be at least 6 characters.');
+                        return;
+                    }
+                    
+                    this.handleRegister(storeName, ownerName, email, password);
+                });
+                
+                // Toggle between login and register forms
+                document.getElementById('show-register').addEventListener('click', () => {
+                    document.getElementById('login-form').style.display = 'none';
+                    document.getElementById('register-form').style.display = 'block';
+                    document.getElementById('login-error').style.display = 'none';
+                });
+                
+                document.getElementById('show-login').addEventListener('click', () => {
+                    document.getElementById('register-form').style.display = 'none';
+                    document.getElementById('login-form').style.display = 'block';
+                    document.getElementById('login-error').style.display = 'none';
+                });
+                
+                // Demo login button
+                document.getElementById('demo-login-btn')?.addEventListener('click', () => {
+                    this.useDemoCredentials();
+                    document.getElementById('login-submit-btn').click();
                 });
                 
                 // Logout button
@@ -1545,7 +2049,6 @@
                 // Modal controls
                 document.getElementById('close-modal').addEventListener('click', () => this.closeModal());
                 document.getElementById('close-edit-modal').addEventListener('click', () => this.closeEditModal());
-                document.getElementById('close-stock-modal').addEventListener('click', () => this.closeStockModal());
                 
                 // Close modal when clicking outside
                 document.querySelectorAll('.modal').forEach(modal => {
@@ -1590,6 +2093,9 @@
                     case 'insights-screen':
                         this.renderInsightsScreen();
                         break;
+                    case 'profile-screen':
+                        this.updateProfileUI();
+                        break;
                 }
             },
             
@@ -1628,9 +2134,8 @@
                     return;
                 }
                 
-                // Create new product
+                // Create new product object
                 const newProduct = {
-                    id: Date.now(), // Simple unique ID
                     name: name,
                     category: category,
                     purchasePrice: purchasePrice,
@@ -1642,32 +2147,73 @@
                     addedDate: this.getTodayDate()
                 };
                 
-                // Add to products array
-                this.data.products.push(newProduct);
-                this.saveData();
-                
-                // Clear form
-                document.getElementById('product-name').value = '';
-                document.getElementById('product-category').value = '';
-                document.getElementById('purchase-price').value = '';
-                document.getElementById('selling-price').value = '';
-                document.getElementById('min-stock').value = '';
-                document.getElementById('expiry-date').value = '';
-                document.getElementById('qty-input').value = '1';
-                
-                // Show success message
-                this.showNotification('Success', `${name} has been added to inventory`, 'success');
-                
-                // Switch to inventory screen
-                setTimeout(() => {
-                    this.switchScreen('inventory-screen');
-                }, 1500);
+                if (this.demoMode) {
+                    // Add to demo data
+                    const productId = 'demo-' + Date.now();
+                    this.data.products.push({
+                        id: productId,
+                        ...newProduct
+                    });
+                    this.saveDemoData();
+                    
+                    // Clear form
+                    document.getElementById('product-name').value = '';
+                    document.getElementById('product-category').value = '';
+                    document.getElementById('purchase-price').value = '';
+                    document.getElementById('selling-price').value = '';
+                    document.getElementById('min-stock').value = '';
+                    document.getElementById('expiry-date').value = '';
+                    document.getElementById('qty-input').value = '1';
+                    
+                    // Refresh inventory display immediately
+                    this.renderInventoryScreen();
+                    this.renderHomeScreen();
+                    
+                    // Show success message
+                    this.showNotification('Success', `${name} has been added to inventory`, 'success');
+                    
+                    // Switch to inventory screen
+                    setTimeout(() => {
+                        this.switchScreen('inventory-screen');
+                    }, 1500);
+                } else {
+                    // Add to Firebase
+                    if (!this.userId) {
+                        this.showNotification('Error', 'Please login to add products', 'danger');
+                        return;
+                    }
+                    
+                    const newProductRef = database.ref(`users/${this.userId}/products`).push();
+                    newProductRef.set(newProduct)
+                        .then(() => {
+                            // Clear form
+                            document.getElementById('product-name').value = '';
+                            document.getElementById('product-category').value = '';
+                            document.getElementById('purchase-price').value = '';
+                            document.getElementById('selling-price').value = '';
+                            document.getElementById('min-stock').value = '';
+                            document.getElementById('expiry-date').value = '';
+                            document.getElementById('qty-input').value = '1';
+                            
+                            // Show success message
+                            this.showNotification('Success', `${name} has been added to inventory`, 'success');
+                            
+                            // Switch to inventory screen
+                            setTimeout(() => {
+                                this.switchScreen('inventory-screen');
+                            }, 1500);
+                        })
+                        .catch((error) => {
+                            console.error("Error adding product:", error);
+                            this.showNotification('Error', 'Failed to add product. Please try again.', 'danger');
+                        });
+                }
             },
             
             // Complete a sale
             completeSale: function() {
                 const productSelect = document.getElementById('sale-product');
-                const productId = parseInt(productSelect.value);
+                const productId = productSelect.value;
                 const quantity = parseInt(document.getElementById('sale-qty-input').value) || 1;
                 const customerName = document.getElementById('customer-name').value.trim();
                 const paymentMethod = document.querySelector('[data-payment].active').getAttribute('data-payment');
@@ -1696,7 +2242,6 @@
                 
                 // Create sale record
                 const newSale = {
-                    id: Date.now(),
                     productId: productId,
                     productName: product.name,
                     quantity: quantity,
@@ -1704,38 +2249,80 @@
                     total: total,
                     paymentMethod: paymentMethod,
                     customerName: customerName,
-                    date: this.getTodayDate()
+                    date: this.getTodayDate(),
+                    timestamp: Date.now()
                 };
                 
-                // Add to sales array
-                this.data.sales.push(newSale);
-                
-                // Update product quantity
-                product.quantity -= quantity;
-                
-                // Save data
-                this.saveData();
-                
-                // Reset form
-                productSelect.value = '';
-                document.getElementById('customer-name').value = '';
-                document.getElementById('sale-qty-input').value = '1';
-                document.querySelectorAll('[data-payment]').forEach(b => b.classList.remove('active'));
-                document.querySelector('[data-payment="cash"]').classList.add('active');
-                document.getElementById('sale-total').textContent = '0';
-                
-                // Show success message
-                this.showNotification('Sale Complete', `${product.name} sold for ₹${total}`, 'success');
-                
-                // Update screens
-                this.renderSalesScreen();
-                this.renderHomeScreen();
+                if (this.demoMode) {
+                    // Update product quantity in demo data
+                    const productIndex = this.data.products.findIndex(p => p.id === productId);
+                    if (productIndex !== -1) {
+                        this.data.products[productIndex].quantity -= quantity;
+                    }
+                    
+                    // Add sale to demo data
+                    const saleId = 'demo-sale-' + Date.now();
+                    this.data.sales.push({
+                        id: saleId,
+                        ...newSale
+                    });
+                    
+                    this.saveDemoData();
+                    
+                    // Reset form
+                    productSelect.value = '';
+                    document.getElementById('customer-name').value = '';
+                    document.getElementById('sale-qty-input').value = '1';
+                    document.querySelectorAll('[data-payment]').forEach(b => b.classList.remove('active'));
+                    document.querySelector('[data-payment="cash"]').classList.add('active');
+                    document.getElementById('sale-total').textContent = '0';
+                    
+                    // Refresh displays
+                    this.renderInventoryScreen();
+                    this.renderSalesScreen();
+                    this.renderHomeScreen();
+                    
+                    // Show success message
+                    this.showNotification('Sale Complete', `${product.name} sold for ₹${total}`, 'success');
+                } else {
+                    // Add sale to Firebase
+                    if (!this.userId) {
+                        this.showNotification('Error', 'Please login to make sales', 'danger');
+                        return;
+                    }
+                    
+                    const newSaleRef = database.ref(`users/${this.userId}/sales`).push();
+                    newSaleRef.set(newSale)
+                        .then(() => {
+                            // Update product quantity in Firebase
+                            const newQuantity = product.quantity - quantity;
+                            return database.ref(`users/${this.userId}/products/${productId}`).update({
+                                quantity: newQuantity
+                            });
+                        })
+                        .then(() => {
+                            // Reset form
+                            productSelect.value = '';
+                            document.getElementById('customer-name').value = '';
+                            document.getElementById('sale-qty-input').value = '1';
+                            document.querySelectorAll('[data-payment]').forEach(b => b.classList.remove('active'));
+                            document.querySelector('[data-payment="cash"]').classList.add('active');
+                            document.getElementById('sale-total').textContent = '0';
+                            
+                            // Show success message
+                            this.showNotification('Sale Complete', `${product.name} sold for ₹${total}`, 'success');
+                        })
+                        .catch((error) => {
+                            console.error("Error completing sale:", error);
+                            this.showNotification('Error', 'Failed to complete sale. Please try again.', 'danger');
+                        });
+                }
             },
             
             // Update sale total when product or quantity changes
             updateSaleTotal: function() {
                 const productSelect = document.getElementById('sale-product');
-                const productId = parseInt(productSelect.value);
+                const productId = productSelect.value;
                 const quantity = parseInt(document.getElementById('sale-qty-input').value) || 1;
                 
                 if (!productId) {
@@ -1759,18 +2346,47 @@
             
             // Save store information
             saveStoreInfo: function() {
-                this.data.storeInfo.name = document.getElementById('store-name').value;
-                this.data.storeInfo.owner = document.getElementById('owner-name').value;
-                this.data.storeInfo.address = document.getElementById('store-address').value;
-                this.data.storeInfo.gst = document.getElementById('gst-number').value;
+                const storeInfo = {
+                    name: document.getElementById('store-name').value,
+                    owner: document.getElementById('owner-name').value,
+                    address: document.getElementById('store-address').value,
+                    gst: document.getElementById('gst-number').value,
+                    email: this.currentUser ? this.currentUser.email : 'demo@kirana.com'
+                };
                 
-                this.saveData();
-                this.showNotification('Success', 'Store information saved successfully', 'success');
+                if (this.demoMode) {
+                    this.data.storeInfo = storeInfo;
+                    this.saveDemoData();
+                    this.updateUserInfo();
+                    this.showNotification('Success', 'Store information saved successfully', 'success');
+                } else {
+                    if (!this.userId) {
+                        this.showNotification('Error', 'Please login to save store info', 'danger');
+                        return;
+                    }
+                    
+                    database.ref(`users/${this.userId}/storeInfo`).set(storeInfo)
+                        .then(() => {
+                            this.data.storeInfo = storeInfo;
+                            this.updateUserInfo();
+                            this.showNotification('Success', 'Store information saved successfully', 'success');
+                        })
+                        .catch((error) => {
+                            console.error("Error saving store info:", error);
+                            this.showNotification('Error', 'Failed to save store information', 'danger');
+                        });
+                }
             },
             
             // Export data as JSON
             exportData: function() {
-                const dataStr = JSON.stringify(this.data, null, 2);
+                const exportData = {
+                    storeInfo: this.data.storeInfo,
+                    products: this.data.products,
+                    sales: this.data.sales
+                };
+                
+                const dataStr = JSON.stringify(exportData, null, 2);
                 const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
                 
                 const exportFileDefaultName = `kirana-data-${this.getTodayDate()}.json`;
@@ -1796,16 +2412,63 @@
                     reader.onload = (event) => {
                         try {
                             const importedData = JSON.parse(event.target.result);
-                            this.data = importedData;
-                            this.saveData();
-                            this.showNotification('Import Complete', 'Data imported successfully', 'success');
                             
-                            // Refresh all screens
-                            this.renderHomeScreen();
-                            this.renderInventoryScreen();
-                            this.renderSalesScreen();
-                            this.renderInsightsScreen();
+                            // Show confirmation dialog
+                            if (confirm('This will overwrite your current data. Continue?')) {
+                                if (this.demoMode) {
+                                    // Import to demo data
+                                    this.data.storeInfo = importedData.storeInfo || this.data.storeInfo;
+                                    this.data.products = importedData.products || [];
+                                    this.data.sales = importedData.sales || [];
+                                    this.saveDemoData();
+                                    
+                                    this.showNotification('Import Complete', 'Data imported successfully', 'success');
+                                    
+                                    // Refresh all screens
+                                    this.renderHomeScreen();
+                                    this.renderInventoryScreen();
+                                    this.renderSalesScreen();
+                                    this.renderInsightsScreen();
+                                } else {
+                                    if (!this.userId) {
+                                        this.showNotification('Error', 'Please login to import data', 'danger');
+                                        return;
+                                    }
+                                    
+                                    // Import store info
+                                    if (importedData.storeInfo) {
+                                        database.ref(`users/${this.userId}/storeInfo`).set(importedData.storeInfo);
+                                    }
+                                    
+                                    // Import products
+                                    if (importedData.products) {
+                                        const productsRef = database.ref(`users/${this.userId}/products`);
+                                        productsRef.remove(); // Clear existing products
+                                        
+                                        importedData.products.forEach(product => {
+                                            const productCopy = { ...product };
+                                            delete productCopy.id; // Remove id for new push
+                                            productsRef.push().set(productCopy);
+                                        });
+                                    }
+                                    
+                                    // Import sales
+                                    if (importedData.sales) {
+                                        const salesRef = database.ref(`users/${this.userId}/sales`);
+                                        salesRef.remove(); // Clear existing sales
+                                        
+                                        importedData.sales.forEach(sale => {
+                                            const saleCopy = { ...sale };
+                                            delete saleCopy.id; // Remove id for new push
+                                            salesRef.push().set(saleCopy);
+                                        });
+                                    }
+                                    
+                                    this.showNotification('Import Complete', 'Data imported successfully', 'success');
+                                }
+                            }
                         } catch (error) {
+                            console.error("Import error:", error);
                             this.showNotification('Import Error', 'Invalid data file', 'danger');
                         }
                     };
@@ -1819,26 +2482,32 @@
             // Clear all data
             clearData: function() {
                 if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
-                    localStorage.removeItem('kiranaAppData');
-                    this.data = {
-                        products: [],
-                        sales: [],
-                        storeInfo: {
-                            name: "Suresh Kirana Store",
-                            owner: "Suresh Kumar",
-                            address: "123, Main Market, Gandhi Road, Hyderabad",
-                            gst: "22ABCDE1234F1Z5"
+                    if (this.demoMode) {
+                        this.data.products = [];
+                        this.data.sales = [];
+                        this.saveDemoData();
+                        
+                        this.showNotification('Data Cleared', 'All data has been cleared', 'info');
+                        
+                        // Refresh all screens
+                        this.renderHomeScreen();
+                        this.renderInventoryScreen();
+                        this.renderSalesScreen();
+                        this.renderInsightsScreen();
+                    } else {
+                        if (!this.userId) {
+                            this.showNotification('Error', 'Please login to clear data', 'danger');
+                            return;
                         }
-                    };
-                    
-                    this.saveData();
-                    this.showNotification('Data Cleared', 'All data has been cleared', 'info');
-                    
-                    // Refresh all screens
-                    this.renderHomeScreen();
-                    this.renderInventoryScreen();
-                    this.renderSalesScreen();
-                    this.renderInsightsScreen();
+                        
+                        // Clear products
+                        database.ref(`users/${this.userId}/products`).remove();
+                        
+                        // Clear sales
+                        database.ref(`users/${this.userId}/sales`).remove();
+                        
+                        this.showNotification('Data Cleared', 'All data has been cleared', 'info');
+                    }
                 }
             },
             
@@ -2030,31 +2699,78 @@
                 const product = this.data.products.find(p => p.id === productId);
                 if (!product) return;
                 
-                product.name = document.getElementById('edit-product-name').value;
-                product.category = document.getElementById('edit-product-category').value;
-                product.purchasePrice = parseFloat(document.getElementById('edit-purchase-price').value);
-                product.sellingPrice = parseFloat(document.getElementById('edit-selling-price').value);
-                product.quantity = parseInt(document.getElementById('edit-quantity').value) || 0;
-                product.unit = document.getElementById('edit-unit').value;
-                product.minStock = parseInt(document.getElementById('edit-min-stock').value);
-                product.expiryDate = document.getElementById('edit-expiry-date').value || null;
+                const updatedProduct = {
+                    name: document.getElementById('edit-product-name').value,
+                    category: document.getElementById('edit-product-category').value,
+                    purchasePrice: parseFloat(document.getElementById('edit-purchase-price').value),
+                    sellingPrice: parseFloat(document.getElementById('edit-selling-price').value),
+                    quantity: parseInt(document.getElementById('edit-quantity').value) || 0,
+                    unit: document.getElementById('edit-unit').value,
+                    minStock: parseInt(document.getElementById('edit-min-stock').value),
+                    expiryDate: document.getElementById('edit-expiry-date').value || null,
+                    addedDate: product.addedDate // Keep original added date
+                };
                 
-                this.saveData();
-                this.closeEditModal();
-                this.renderInventoryScreen();
-                this.renderHomeScreen();
-                this.showNotification('Success', 'Product updated successfully', 'success');
+                if (this.demoMode) {
+                    // Update in demo data
+                    const productIndex = this.data.products.findIndex(p => p.id === productId);
+                    if (productIndex !== -1) {
+                        this.data.products[productIndex] = {
+                            id: productId,
+                            ...updatedProduct
+                        };
+                        this.saveDemoData();
+                        this.closeEditModal();
+                        this.showNotification('Success', 'Product updated successfully', 'success');
+                        this.renderInventoryScreen();
+                        this.renderHomeScreen();
+                    }
+                } else {
+                    // Update in Firebase
+                    if (!this.userId) {
+                        this.showNotification('Error', 'Please login to edit product', 'danger');
+                        return;
+                    }
+                    
+                    database.ref(`users/${this.userId}/products/${productId}`).update(updatedProduct)
+                        .then(() => {
+                            this.closeEditModal();
+                            this.showNotification('Success', 'Product updated successfully', 'success');
+                        })
+                        .catch((error) => {
+                            console.error("Error updating product:", error);
+                            this.showNotification('Error', 'Failed to update product', 'danger');
+                        });
+                }
             },
             
             // Delete product
             deleteProduct: function(productId) {
                 if (confirm('Are you sure you want to delete this product?')) {
-                    this.data.products = this.data.products.filter(p => p.id !== productId);
-                    this.saveData();
-                    this.closeModal();
-                    this.renderInventoryScreen();
-                    this.renderHomeScreen();
-                    this.showNotification('Deleted', 'Product removed from inventory', 'info');
+                    if (this.demoMode) {
+                        // Remove from demo data
+                        this.data.products = this.data.products.filter(p => p.id !== productId);
+                        this.saveDemoData();
+                        this.closeModal();
+                        this.renderInventoryScreen();
+                        this.renderHomeScreen();
+                        this.showNotification('Deleted', 'Product removed from inventory', 'info');
+                    } else {
+                        if (!this.userId) {
+                            this.showNotification('Error', 'Please login to delete product', 'danger');
+                            return;
+                        }
+                        
+                        database.ref(`users/${this.userId}/products/${productId}`).remove()
+                            .then(() => {
+                                this.closeModal();
+                                this.showNotification('Deleted', 'Product removed from inventory', 'info');
+                            })
+                            .catch((error) => {
+                                console.error("Error deleting product:", error);
+                                this.showNotification('Error', 'Failed to delete product', 'danger');
+                            });
+                    }
                 }
             },
             
@@ -2065,10 +2781,6 @@
             
             closeEditModal: function() {
                 document.getElementById('edit-modal').classList.remove('active');
-            },
-            
-            closeStockModal: function() {
-                document.getElementById('update-stock-modal').classList.remove('active');
             },
             
             // Get product status
@@ -2141,7 +2853,7 @@
                     lowStockItems.slice(0, 5).forEach(product => {
                         const status = this.getProductStatus(product);
                         html += `
-                            <div class="product-item ${status.text === 'Low Stock' ? 'low-stock' : 'out-of-stock'}" onclick="KiranaApp.showProductModal(${product.id})">
+                            <div class="product-item ${status.text === 'Low Stock' ? 'low-stock' : 'out-of-stock'}" onclick="KiranaApp.showProductModal('${product.id}')">
                                 <div class="product-info">
                                     <h4>${product.name}</h4>
                                     <p>Category: ${product.category} | Min: ${product.minStock} ${product.unit}</p>
@@ -2169,6 +2881,13 @@
             // Render inventory screen
             renderInventoryScreen: function(filter = 'all', searchTerm = '') {
                 const inventoryContainer = document.getElementById('inventory-items');
+                const loader = document.getElementById('inventory-loader');
+                
+                // Hide loader if it exists
+                if (loader) {
+                    loader.style.display = 'none';
+                }
+                
                 let filteredProducts = this.data.products;
                 
                 // Apply filter
@@ -2197,7 +2916,7 @@
                     filteredProducts.forEach(product => {
                         const status = this.getProductStatus(product);
                         html += `
-                            <div class="product-item ${status.text === 'Low Stock' ? 'low-stock' : status.text === 'Out of Stock' ? 'out-of-stock' : status.text === 'Expiring Soon' ? 'expiring-soon' : ''}" onclick="KiranaApp.showProductModal(${product.id})">
+                            <div class="product-item ${status.text === 'Low Stock' ? 'low-stock' : status.text === 'Out of Stock' ? 'out-of-stock' : status.text === 'Expiring Soon' ? 'expiring-soon' : ''}" onclick="KiranaApp.showProductModal('${product.id}')">
                                 <div class="product-info">
                                     <h4>${product.name}</h4>
                                     <p>Category: ${product.category} | Price: ₹${product.sellingPrice}/${product.unit}</p>
@@ -2231,10 +2950,12 @@
                 productSelect.innerHTML = '<option value="">Choose a product...</option>';
                 
                 this.data.products.forEach(product => {
-                    const option = document.createElement('option');
-                    option.value = product.id;
-                    option.textContent = `${product.name} (₹${product.sellingPrice}/${product.unit}) - Stock: ${product.quantity} ${product.unit}`;
-                    productSelect.appendChild(option);
+                    if (product.quantity > 0) {
+                        const option = document.createElement('option');
+                        option.value = product.id;
+                        option.textContent = `${product.name} (₹${product.sellingPrice}/${product.unit}) - Stock: ${product.quantity} ${product.unit}`;
+                        productSelect.appendChild(option);
+                    }
                 });
                 
                 // Update recent sales
@@ -2807,5 +3528,4 @@
         });
     </script>
 </body>
-
 </html>
