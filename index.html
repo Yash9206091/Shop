@@ -322,14 +322,14 @@
             margin: 15px 0;
         }
 
-        /* Product List */
-        .product-list {
+        /* Transaction List */
+        .transaction-list {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .product-item {
+        .transaction-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -337,33 +337,40 @@
             background-color: white;
             border-radius: var(--radius-sm);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            border-left: 5px solid var(--primary);
+            border-left: 5px solid var(--success);
             transition: transform 0.2s;
-            cursor: pointer;
         }
 
-        .product-item:hover {
+        .transaction-item.debit {
+            border-left-color: var(--danger);
+        }
+
+        .transaction-item:hover {
             transform: translateY(-2px);
         }
 
-        .product-info h4 {
+        .transaction-info h4 {
             font-weight: 600;
             margin-bottom: 5px;
         }
 
-        .product-info p {
+        .transaction-info p {
             font-size: 0.9rem;
             color: var(--gray);
         }
 
-        .product-qty {
+        .transaction-amount {
             font-weight: 700;
             font-size: 1.2rem;
         }
 
-        .low-stock { border-left-color: var(--warning); }
-        .out-of-stock { border-left-color: var(--danger); }
-        .expiring-soon { border-left-color: #f97316; }
+        .transaction-amount.credit {
+            color: var(--success);
+        }
+
+        .transaction-amount.debit {
+            color: var(--danger);
+        }
 
         /* Buttons */
         .btn {
@@ -400,19 +407,6 @@
 
         .btn-block {
             width: 100%;
-        }
-
-        .btn-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            box-shadow: var(--shadow);
-            cursor: pointer;
-            border: none;
         }
 
         /* Form Elements */
@@ -454,65 +448,6 @@
             background-size: 16px;
         }
 
-        /* Quantity Control - Enhanced */
-        .qty-control-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .qty-control {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background-color: var(--gray-light);
-            padding: 5px;
-            border-radius: var(--radius-sm);
-            width: fit-content;
-        }
-
-        .qty-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            background-color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .qty-btn:active {
-            transform: scale(0.95);
-        }
-
-        .qty-input {
-            width: 70px;
-            height: 40px;
-            border: none;
-            background: transparent;
-            font-size: 1.2rem;
-            font-weight: 700;
-            text-align: center;
-            -moz-appearance: textfield;
-        }
-
-        .qty-input::-webkit-outer-spin-button,
-        .qty-input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .qty-unit {
-            font-weight: 600;
-            color: var(--gray);
-            min-width: 60px;
-        }
-
         /* Input Groups */
         .input-group {
             display: flex;
@@ -549,21 +484,7 @@
             box-shadow: var(--shadow);
         }
 
-        /* Alert Badges */
-        .alert-badge {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: inline-block;
-            margin-left: 10px;
-        }
-
-        .badge-low { background-color: rgba(245, 158, 11, 0.1); color: var(--warning); }
-        .badge-expiring { background-color: rgba(239, 68, 68, 0.1); color: var(--danger); }
-        .badge-new { background-color: rgba(16, 185, 129, 0.1); color: var(--success); }
-
-        /* Bottom Navigation */
+        /* Bottom Navigation - Simplified to 3 items */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -588,7 +509,7 @@
             flex: 1;
             padding: 8px 0;
             transition: all 0.2s;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             border: none;
             background: none;
             cursor: pointer;
@@ -599,25 +520,8 @@
         }
 
         .nav-icon {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             margin-bottom: 4px;
-        }
-
-        .nav-center {
-            position: relative;
-            top: -20px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
-            font-size: 1.8rem;
-            border: none;
-            cursor: pointer;
         }
 
         /* Insights Cards */
@@ -767,6 +671,57 @@
             color: var(--dark);
         }
 
+        /* Date Filter */
+        .date-filter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .date-filter input {
+            flex: 1;
+            padding: 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray-light);
+        }
+
+        /* Transaction Summary */
+        .transaction-summary {
+            display: flex;
+            justify-content: space-between;
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .summary-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .summary-value.credit {
+            color: var(--success);
+        }
+
+        .summary-value.debit {
+            color: var(--danger);
+        }
+
+        .summary-value.net {
+            color: var(--primary);
+        }
+
         /* Responsive */
         @media (max-width: 480px) {
             .stats-grid {
@@ -789,6 +744,17 @@
             .login-logo {
                 flex-direction: column;
                 gap: 10px;
+            }
+            
+            .transaction-summary {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .summary-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
             }
         }
 
@@ -824,29 +790,7 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* Setup Instructions */
-        .setup-instructions {
-            background-color: #fff8e1;
-            border-left: 5px solid #ff9800;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: var(--radius-sm);
-        }
-        
-        .setup-instructions h4 {
-            color: #e65100;
-            margin-bottom: 10px;
-        }
-        
-        .setup-instructions ol {
-            padding-left: 20px;
-            margin-bottom: 10px;
-        }
-        
-        .setup-instructions li {
-            margin-bottom: 5px;
-        }
-        
+        /* Demo Credentials */
         .demo-credentials {
             background-color: #e8f5e9;
             border-left: 5px solid #4caf50;
@@ -858,6 +802,67 @@
         .demo-credentials h4 {
             color: #2e7d32;
             margin-bottom: 10px;
+        }
+        
+        /* Quick Add Buttons */
+        .quick-add-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .quick-add-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .quick-add-btn.credit {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 2px solid var(--success);
+        }
+        
+        .quick-add-btn.debit {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 2px solid var(--danger);
+        }
+        
+        .quick-add-btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        /* Category Tags */
+        .category-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .category-tag {
+            background-color: var(--gray-light);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .category-tag.active {
+            background-color: var(--primary);
+            color: white;
         }
     </style>
 </head>
@@ -939,7 +944,7 @@
             </div>
             
             <div class="login-footer">
-                <p>For Kirana store owners • Smart inventory management</p>
+                <p>For Kirana store owners • Simple Credit/Debit Management</p>
             </div>
         </div>
     </div>
@@ -968,34 +973,49 @@
 
         <!-- Main Content Area -->
         <div class="main-content">
-            <!-- Home Screen -->
+            <!-- Home Screen - Analysis -->
             <div id="home-screen" class="screen active">
                 <div class="card">
                     <div class="card-title">
-                        <span>Today's Overview</span>
+                        <span>Today's Analysis</span>
                         <span id="current-date" style="font-size: 0.9rem; color: var(--gray);"></span>
+                    </div>
+                    
+                    <div class="transaction-summary">
+                        <div class="summary-item">
+                            <div class="summary-label">Credit</div>
+                            <div id="today-credit" class="summary-value credit currency">0</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Debit</div>
+                            <div id="today-debit" class="summary-value debit currency">0</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Net Profit</div>
+                            <div id="today-profit" class="summary-value net currency">0</div>
+                        </div>
                     </div>
                     
                     <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-label">
-                                <i class="fas fa-boxes"></i>
-                                Total Products
+                                <i class="fas fa-arrow-down"></i>
+                                Total Credit
                             </div>
-                            <div id="total-products" class="stat-value">0</div>
+                            <div id="total-credit" class="stat-value currency">0</div>
                             <div class="stat-trend trend-up">
-                                <i class="fas fa-box"></i> Manage stock
+                                <i class="fas fa-rupee-sign"></i> Sales & Income
                             </div>
                         </div>
                         
                         <div class="stat-card">
                             <div class="stat-label">
-                                <i class="fas fa-rupee-sign"></i>
-                                Today's Sales
+                                <i class="fas fa-arrow-up"></i>
+                                Total Debit
                             </div>
-                            <div id="today-sales" class="stat-value currency">0</div>
-                            <div id="sales-trend" class="stat-trend trend-up">
-                                <i class="fas fa-chart-line"></i> Track sales
+                            <div id="total-debit" class="stat-value currency">0</div>
+                            <div class="stat-trend trend-down">
+                                <i class="fas fa-shopping-cart"></i> Expenses & Purchases
                             </div>
                         </div>
                         
@@ -1006,18 +1026,18 @@
                             </div>
                             <div id="monthly-profit" class="stat-value currency">0</div>
                             <div class="stat-trend trend-up">
-                                <i class="fas fa-wallet"></i> View insights
+                                <i class="fas fa-wallet"></i> Net Earnings
                             </div>
                         </div>
                         
                         <div class="stat-card">
                             <div class="stat-label">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                Low Stock Alerts
+                                <i class="fas fa-calendar-alt"></i>
+                                This Month
                             </div>
-                            <div id="low-stock-count" class="stat-value" style="color: var(--warning);">0</div>
-                            <div class="stat-trend trend-down">
-                                <i class="fas fa-shopping-cart"></i> Restock needed
+                            <div id="month-transactions" class="stat-value">0</div>
+                            <div class="stat-trend trend-up">
+                                <i class="fas fa-exchange-alt"></i> Transactions
                             </div>
                         </div>
                     </div>
@@ -1025,184 +1045,72 @@
                 
                 <div class="card">
                     <div class="card-title">
-                        <span>Sales Trend (Last 7 Days)</span>
+                        <span>Income vs Expenses (Last 7 Days)</span>
                     </div>
                     <div class="chart-container">
-                        <canvas id="salesChart"></canvas>
+                        <canvas id="incomeExpenseChart"></canvas>
                     </div>
                 </div>
                 
                 <div class="card">
                     <div class="card-title">
-                        <span>Stock Status</span>
+                        <span>Top Categories</span>
                     </div>
                     <div class="chart-container">
-                        <canvas id="stockChart"></canvas>
+                        <canvas id="categoryChart"></canvas>
                     </div>
                 </div>
                 
                 <div class="card">
                     <div class="card-title">
-                        <span>Low Stock Items</span>
-                        <span id="low-stock-badge" class="alert-badge badge-low">0 Items</span>
+                        <span>Recent Transactions</span>
+                        <button class="btn" style="padding: 5px 10px; font-size: 0.8rem;" id="view-all-transactions">View All</button>
                     </div>
-                    <div id="low-stock-items" class="product-list">
+                    <div id="recent-transactions" class="transaction-list">
                         <div class="empty-state">
-                            <i class="fas fa-check-circle empty-state-icon"></i>
-                            <div class="empty-state-title">All items are well stocked</div>
-                            <p>Add products to get started</p>
+                            <i class="fas fa-exchange-alt empty-state-icon"></i>
+                            <div class="empty-state-title">No transactions yet</div>
+                            <p>Add your first credit or debit transaction</p>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Inventory Screen -->
-            <div id="inventory-screen" class="screen">
-                <div class="search-bar">
-                    <input type="text" class="search-input" id="inventory-search" placeholder="Search products...">
-                    <button class="search-btn" id="search-btn">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-                
-                <div class="tabs" id="inventory-tabs">
-                    <button class="tab active" data-tab="all">All Items</button>
-                    <button class="tab" data-tab="low">Low Stock</button>
-                    <button class="tab" data-tab="expiring">Expiring Soon</button>
-                </div>
-                
-                <div id="inventory-items" class="product-list">
-                    <div class="loader" id="inventory-loader"></div>
-                </div>
-                
-                <button class="btn btn-primary btn-block" id="add-manual-btn">
-                    <i class="fas fa-plus"></i> Add New Product
-                </button>
-            </div>
-            
-            <!-- Add/Scan Screen -->
-            <div id="add-screen" class="screen">
+            <!-- Credit Screen -->
+            <div id="credit-screen" class="screen">
                 <div class="card">
                     <div class="card-title">
-                        <span>Quick Add Product</span>
+                        <span>Add Credit (Income)</span>
+                        <i class="fas fa-arrow-down" style="color: var(--success);"></i>
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">Product Name *</label>
-                        <input type="text" class="form-input" id="product-name" placeholder="Enter product name">
+                        <label class="form-label">Amount (₹) *</label>
+                        <input type="number" class="form-input" id="credit-amount" placeholder="Enter amount" min="1" step="0.01" inputmode="decimal" required>
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label">Category *</label>
-                        <select class="select-input" id="product-category">
+                        <select class="select-input" id="credit-category">
                             <option value="">Select Category</option>
-                            <option value="Rice & Grains">Rice & Grains</option>
-                            <option value="Cooking Oil">Cooking Oil</option>
-                            <option value="Dairy">Dairy</option>
-                            <option value="Snacks">Snacks</option>
-                            <option value="Beverages">Beverages</option>
-                            <option value="Detergents">Detergents</option>
-                            <option value="Personal Care">Personal Care</option>
-                            <option value="Spices">Spices</option>
-                            <option value="Pulses">Pulses</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    
-                    <div class="input-group">
-                        <div class="form-group" style="flex: 1;">
-                            <label class="form-label">Purchase Price (₹) *</label>
-                            <input type="number" class="form-input" id="purchase-price" placeholder="Cost price" min="1" step="0.01" inputmode="decimal">
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label class="form-label">Selling Price (₹) *</label>
-                            <input type="number" class="form-input" id="selling-price" placeholder="Selling price" min="1" step="0.01" inputmode="decimal">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Current Quantity *</label>
-                        <div class="qty-control-container">
-                            <div class="qty-control">
-                                <button type="button" class="qty-btn" id="decrease-qty">-</button>
-                                <input type="number" class="qty-input" id="qty-input" value="1" min="0" step="1" inputmode="numeric">
-                                <button type="button" class="qty-btn" id="increase-qty">+</button>
-                            </div>
-                            <div class="qty-unit">
-                                <select class="select-input" style="width: auto; padding: 8px 12px;" id="unit">
-                                    <option value="kg">Kg</option>
-                                    <option value="packet">Packet</option>
-                                    <option value="bottle">Bottle</option>
-                                    <option value="piece">Piece</option>
-                                    <option value="liter">Liter</option>
-                                    <option value="dozen">Dozen</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Minimum Stock Threshold *</label>
-                        <input type="number" class="form-input" id="min-stock" placeholder="Alert when below this number" min="1" inputmode="numeric">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Expiry Date (if applicable)</label>
-                        <input type="date" class="form-input" id="expiry-date">
-                    </div>
-                    
-                    <button class="btn btn-primary btn-block" id="save-product-btn">
-                        <i class="fas fa-save"></i> Save Product
-                    </button>
-                </div>
-                
-                <div class="card">
-                    <div class="card-title">
-                        <span>Quick Actions</span>
-                    </div>
-                    
-                    <div style="display: flex; justify-content: space-around; margin: 20px 0;">
-                        <button class="btn-icon" style="background-color: var(--primary); color: white;" id="scan-barcode-btn">
-                            <i class="fas fa-barcode"></i>
-                        </button>
-                        <button class="btn-icon" style="background-color: var(--secondary); color: white;" id="voice-input-btn">
-                            <i class="fas fa-microphone"></i>
-                        </button>
-                        <button class="btn-icon" style="background-color: var(--warning); color: white;" id="quick-sale-btn">
-                            <i class="fas fa-cash-register"></i>
-                        </button>
-                    </div>
-                    
-                    <div style="text-align: center; color: var(--gray); font-size: 0.9rem;">
-                        <p>Tap icons for quick actions: Scan, Voice Input, Quick Sale</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Sales Screen -->
-            <div id="sales-screen" class="screen">
-                <div class="card">
-                    <div class="card-title">
-                        <span>New Sale</span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Select Product *</label>
-                        <select class="select-input" id="sale-product">
-                            <option value="">Choose a product...</option>
-                            <!-- Products will be dynamically added -->
+                            <option value="Sales">Sales</option>
+                            <option value="Cash Sale">Cash Sale</option>
+                            <option value="UPI Payment">UPI Payment</option>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="Online Order">Online Order</option>
+                            <option value="Investment">Investment</option>
+                            <option value="Other Income">Other Income</option>
                         </select>
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">Quantity *</label>
-                        <div class="qty-control-container">
-                            <div class="qty-control">
-                                <button type="button" class="qty-btn" id="decrease-sale-qty">-</button>
-                                <input type="number" class="qty-input" id="sale-qty-input" value="1" min="1" step="1" inputmode="numeric">
-                                <button type="button" class="qty-btn" id="increase-sale-qty">+</button>
-                            </div>
-                        </div>
+                        <label class="form-label">Description *</label>
+                        <input type="text" class="form-input" id="credit-description" placeholder="What is this income for?">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Customer Name (Optional)</label>
+                        <input type="text" class="form-input" id="credit-customer" placeholder="Enter customer name">
                     </div>
                     
                     <div class="form-group">
@@ -1210,138 +1118,135 @@
                         <div style="display: flex; gap: 10px;">
                             <button type="button" class="tab active" style="flex: 1;" data-payment="cash">Cash</button>
                             <button type="button" class="tab" style="flex: 1;" data-payment="upi">UPI</button>
-                            <button type="button" class="tab" style="flex: 1;" data-payment="credit">Credit</button>
+                            <button type="button" class="tab" style="flex: 1;" data-payment="card">Card</button>
+                            <button type="button" class="tab" style="flex: 1;" data-payment="online">Online</button>
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">Customer Name (Optional)</label>
-                        <input type="text" class="form-input" id="customer-name" placeholder="Enter customer name">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-input" id="credit-date" value="">
                     </div>
                     
-                    <div class="form-group">
-                        <div style="display: flex; justify-content: space-between; background-color: var(--light); padding: 15px; border-radius: var(--radius-sm);">
-                            <div>
-                                <div style="font-size: 0.9rem; color: var(--gray);">Total Amount</div>
-                                <div id="sale-total" style="font-size: 1.8rem; font-weight: 700;" class="currency">0</div>
-                            </div>
-                            <button class="btn btn-secondary" id="complete-sale-btn">
-                                <i class="fas fa-check"></i> Complete Sale
-                            </button>
-                        </div>
-                    </div>
+                    <button class="btn btn-secondary btn-block" id="add-credit-btn">
+                        <i class="fas fa-plus-circle"></i> Add Credit Entry
+                    </button>
                 </div>
                 
-                <div class="card">
-                    <div class="card-title">
-                        <span>Today's Sales</span>
-                        <i class="fas fa-history" style="color: var(--primary);"></i>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="dailySalesChart"></canvas>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-title">
-                        <span>Recent Sales</span>
-                        <button class="btn" style="padding: 5px 10px; font-size: 0.8rem;" id="view-all-sales">View All</button>
-                    </div>
-                    <div id="recent-sales" class="product-list">
-                        <div class="empty-state">
-                            <i class="fas fa-shopping-cart empty-state-icon"></i>
-                            <div class="empty-state-title">No sales yet today</div>
-                            <p>Make your first sale!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Insights Screen -->
-            <div id="insights-screen" class="screen">
-                <div class="card">
-                    <div class="card-title">
-                        <span>AI Insights</span>
-                        <i class="fas fa-robot" style="color: var(--primary);"></i>
-                    </div>
-                    
-                    <div id="ai-insights">
-                        <div class="empty-state">
-                            <i class="fas fa-chart-line empty-state-icon"></i>
-                            <div class="empty-state-title">No insights yet</div>
-                            <p>Add products and make sales to get insights</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-title">
-                        <span>Monthly Profit vs Expenses</span>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="profitChart"></canvas>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-title">
-                        <span>Category-wise Sales</span>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="categoryChart"></canvas>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Profile Screen -->
-            <div id="profile-screen" class="screen">
-                <div class="card">
-                    <div class="card-title">
-                        <span>Store Information</span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Store Name</label>
-                        <input type="text" class="form-input" id="store-name" value="My Kirana Store">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Owner Name</label>
-                        <input type="text" class="form-input" id="owner-name" value="Store Owner">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Store Address</label>
-                        <textarea class="form-input" id="store-address" rows="3">Enter your store address</textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">GST Number</label>
-                        <input type="text" class="form-input" id="gst-number" value="22XXXXX1234X1X5">
-                    </div>
-                    
-                    <button class="btn btn-primary btn-block" id="save-store-info">
-                        <i class="fas fa-save"></i> Save Changes
+                <div class="quick-add-buttons">
+                    <button class="quick-add-btn credit" data-amount="100">
+                        <i class="fas fa-rupee-sign"></i>
+                        <span>₹100 Sale</span>
+                    </button>
+                    <button class="quick-add-btn credit" data-amount="500">
+                        <i class="fas fa-rupee-sign"></i>
+                        <span>₹500 Sale</span>
+                    </button>
+                    <button class="quick-add-btn credit" data-amount="1000">
+                        <i class="fas fa-rupee-sign"></i>
+                        <span>₹1000 Sale</span>
                     </button>
                 </div>
                 
                 <div class="card">
                     <div class="card-title">
-                        <span>Data Management</span>
+                        <span>Today's Credit Entries</span>
+                        <span id="today-credit-count" class="alert-badge badge-low">0</span>
+                    </div>
+                    <div id="today-credit-list" class="transaction-list">
+                        <div class="empty-state">
+                            <i class="fas fa-arrow-down empty-state-icon"></i>
+                            <div class="empty-state-title">No credit entries today</div>
+                            <p>Add your first credit entry above</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Debit Screen -->
+            <div id="debit-screen" class="screen">
+                <div class="card">
+                    <div class="card-title">
+                        <span>Add Debit (Expense)</span>
+                        <i class="fas fa-arrow-up" style="color: var(--danger);"></i>
                     </div>
                     
                     <div class="form-group">
-                        <button class="btn btn-block" style="background-color: var(--light); margin-bottom: 10px;" id="export-data">
-                            <i class="fas fa-file-export"></i> Export Data (JSON)
-                        </button>
-                        
-                        <button class="btn btn-block" style="background-color: var(--light); margin-bottom: 10px;" id="import-data">
-                            <i class="fas fa-file-import"></i> Import Data
-                        </button>
-                        
-                        <button class="btn btn-block" style="background-color: rgba(239, 68, 68, 0.1); color: var(--danger);" id="clear-data">
-                            <i class="fas fa-trash-alt"></i> Clear All Data
-                        </button>
+                        <label class="form-label">Amount (₹) *</label>
+                        <input type="number" class="form-input" id="debit-amount" placeholder="Enter amount" min="1" step="0.01" inputmode="decimal" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Category *</label>
+                        <select class="select-input" id="debit-category">
+                            <option value="">Select Category</option>
+                            <option value="Purchase">Purchase</option>
+                            <option value="Groceries">Groceries</option>
+                            <option value="Rent">Rent</option>
+                            <option value="Electricity">Electricity</option>
+                            <option value="Salary">Salary</option>
+                            <option value="Maintenance">Maintenance</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Other Expense">Other Expense</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Description *</label>
+                        <input type="text" class="form-input" id="debit-description" placeholder="What is this expense for?">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Vendor/Supplier (Optional)</label>
+                        <input type="text" class="form-input" id="debit-vendor" placeholder="Enter vendor/supplier name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Payment Method *</label>
+                        <div style="display: flex; gap: 10px;">
+                            <button type="button" class="tab active" style="flex: 1;" data-payment="cash">Cash</button>
+                            <button type="button" class="tab" style="flex: 1;" data-payment="upi">UPI</button>
+                            <button type="button" class="tab" style="flex: 1;" data-payment="card">Card</button>
+                            <button type="button" class="tab" style="flex: 1;" data-payment="online">Online</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-input" id="debit-date" value="">
+                    </div>
+                    
+                    <button class="btn btn-primary btn-block" id="add-debit-btn">
+                        <i class="fas fa-minus-circle"></i> Add Debit Entry
+                    </button>
+                </div>
+                
+                <div class="quick-add-buttons">
+                    <button class="quick-add-btn debit" data-amount="50">
+                        <i class="fas fa-rupee-sign"></i>
+                        <span>₹50 Expense</span>
+                    </button>
+                    <button class="quick-add-btn debit" data-amount="200">
+                        <i class="fas fa-rupee-sign"></i>
+                        <span>₹200 Expense</span>
+                    </button>
+                    <button class="quick-add-btn debit" data-amount="1000">
+                        <i class="fas fa-rupee-sign"></i>
+                        <span>₹1000 Expense</span>
+                    </button>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <span>Today's Debit Entries</span>
+                        <span id="today-debit-count" class="alert-badge badge-low">0</span>
+                    </div>
+                    <div id="today-debit-list" class="transaction-list">
+                        <div class="empty-state">
+                            <i class="fas fa-arrow-up empty-state-icon"></i>
+                            <div class="empty-state-title">No debit entries today</div>
+                            <p>Add your first debit entry above</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1356,66 +1261,21 @@
             </div>
         </div>
         
-        <!-- Modal for product details -->
-        <div class="modal" id="product-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title">Product Details</div>
-                    <button class="close-modal" id="close-modal">&times;</button>
-                </div>
-                <div id="modal-body">
-                    <!-- Product details will be dynamically added here -->
-                </div>
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button class="btn btn-primary" style="flex: 1;" id="edit-product-btn">Edit</button>
-                    <button class="btn" style="flex: 1; background-color: var(--light);" id="sell-product-btn">Sell</button>
-                    <button class="btn" style="flex: 1; background-color: rgba(239, 68, 68, 0.1); color: var(--danger);" id="delete-product-btn">Delete</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Modal for editing product -->
-        <div class="modal" id="edit-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title">Edit Product</div>
-                    <button class="close-modal" id="close-edit-modal">&times;</button>
-                </div>
-                <div id="edit-modal-body">
-                    <!-- Edit form will be dynamically added here -->
-                </div>
-            </div>
-        </div>
-        
-        <!-- Bottom Navigation -->
+        <!-- Bottom Navigation - Simplified to 3 items -->
         <div class="bottom-nav">
             <button class="nav-item active" data-screen="home-screen">
-                <i class="fas fa-home nav-icon"></i>
-                <span>Home</span>
-            </button>
-            
-            <button class="nav-item" data-screen="inventory-screen">
-                <i class="fas fa-boxes nav-icon"></i>
-                <span>Inventory</span>
-            </button>
-            
-            <button class="nav-center" data-screen="add-screen">
-                <i class="fas fa-plus"></i>
-            </button>
-            
-            <button class="nav-item" data-screen="sales-screen">
-                <i class="fas fa-rupee-sign nav-icon"></i>
-                <span>Sales</span>
-            </button>
-            
-            <button class="nav-item" data-screen="insights-screen">
                 <i class="fas fa-chart-pie nav-icon"></i>
-                <span>Insights</span>
+                <span>Analysis</span>
             </button>
             
-            <button class="nav-item" data-screen="profile-screen">
-                <i class="fas fa-user nav-icon"></i>
-                <span>Profile</span>
+            <button class="nav-item" data-screen="credit-screen">
+                <i class="fas fa-arrow-down nav-icon"></i>
+                <span>Credit</span>
+            </button>
+            
+            <button class="nav-item" data-screen="debit-screen">
+                <i class="fas fa-arrow-up nav-icon"></i>
+                <span>Debit</span>
             </button>
         </div>
     </div>
@@ -1450,10 +1310,10 @@
             // Demo mode flag
             demoMode: false,
             
-            // App data structure
+            // App data structure - Simplified
             data: {
-                products: [],
-                sales: [],
+                credits: [],
+                debits: [],
                 storeInfo: {
                     name: "My Kirana Store",
                     owner: "Store Owner",
@@ -1465,27 +1325,16 @@
             
             // Initialize app
             init: function() {
-                // Show setup instructions if needed
-                this.checkFirebaseSetup();
-                
                 this.setupEventListeners();
                 this.updateCurrentDate();
                 
+                // Set today's date in form inputs
+                const today = this.getTodayDate();
+                document.getElementById('credit-date').value = today;
+                document.getElementById('debit-date').value = today;
+                
                 // Check if user is already logged in
                 this.checkAuthState();
-            },
-            
-            // Check Firebase Authentication setup
-            checkFirebaseSetup: function() {
-                // Check if we can connect to Firebase
-                const testRef = database.ref('.info/connected');
-                testRef.on('value', (snapshot) => {
-                    if (snapshot.val() === true) {
-                        console.log('Firebase Realtime Database connected');
-                    } else {
-                        console.log('Firebase Realtime Database not connected');
-                    }
-                });
             },
             
             // Check authentication state
@@ -1548,8 +1397,8 @@
                 if (demoData) {
                     try {
                         const parsedData = JSON.parse(demoData);
-                        this.data.products = parsedData.products || [];
-                        this.data.sales = parsedData.sales || [];
+                        this.data.credits = parsedData.credits || [];
+                        this.data.debits = parsedData.debits || [];
                         if (parsedData.storeInfo) {
                             this.data.storeInfo = { ...this.data.storeInfo, ...parsedData.storeInfo };
                         }
@@ -1564,8 +1413,8 @@
                 if (!this.demoMode) return;
                 
                 const demoData = {
-                    products: this.data.products,
-                    sales: this.data.sales,
+                    credits: this.data.credits,
+                    debits: this.data.debits,
                     storeInfo: this.data.storeInfo
                 };
                 
@@ -1578,9 +1427,8 @@
                 if (this.demoMode) {
                     this.updateUserInfo();
                     this.renderHomeScreen();
-                    this.renderInventoryScreen();
-                    this.renderSalesScreen();
-                    this.renderInsightsScreen();
+                    this.renderCreditScreen();
+                    this.renderDebitScreen();
                     return;
                 }
                 
@@ -1600,65 +1448,64 @@
                         this.updateUserInfo();
                     });
                 
-                // Load products
-                this.loadProducts();
+                // Load credits
+                this.loadCredits();
                 
-                // Load sales
-                this.loadSales();
+                // Load debits
+                this.loadDebits();
             },
             
-            // Load products from Firebase
-            loadProducts: function() {
+            // Load credits from Firebase
+            loadCredits: function() {
                 if (this.demoMode) {
-                    // Products are already loaded from localStorage
+                    // Credits are already loaded from localStorage
                     return;
                 }
                 
                 if (!this.userId) return;
                 
-                database.ref(`users/${this.userId}/products`).on('value', (snapshot) => {
-                    this.data.products = [];
+                database.ref(`users/${this.userId}/credits`).on('value', (snapshot) => {
+                    this.data.credits = [];
                     if (snapshot.exists()) {
-                        const productsData = snapshot.val();
-                        Object.keys(productsData).forEach((key) => {
-                            this.data.products.push({
+                        const creditsData = snapshot.val();
+                        Object.keys(creditsData).forEach((key) => {
+                            this.data.credits.push({
                                 id: key,
-                                ...productsData[key]
+                                ...creditsData[key]
                             });
                         });
                     }
-                    this.renderInventoryScreen();
                     this.renderHomeScreen();
-                    this.renderSalesScreen();
+                    this.renderCreditScreen();
                 }, (error) => {
-                    console.error("Error loading products:", error);
+                    console.error("Error loading credits:", error);
                 });
             },
             
-            // Load sales from Firebase
-            loadSales: function() {
+            // Load debits from Firebase
+            loadDebits: function() {
                 if (this.demoMode) {
-                    // Sales are already loaded from localStorage
+                    // Debits are already loaded from localStorage
                     return;
                 }
                 
                 if (!this.userId) return;
                 
-                database.ref(`users/${this.userId}/sales`).on('value', (snapshot) => {
-                    this.data.sales = [];
+                database.ref(`users/${this.userId}/debits`).on('value', (snapshot) => {
+                    this.data.debits = [];
                     if (snapshot.exists()) {
-                        const salesData = snapshot.val();
-                        Object.keys(salesData).forEach((key) => {
-                            this.data.sales.push({
+                        const debitsData = snapshot.val();
+                        Object.keys(debitsData).forEach((key) => {
+                            this.data.debits.push({
                                 id: key,
-                                ...salesData[key]
+                                ...debitsData[key]
                             });
                         });
                     }
-                    this.renderSalesScreen();
                     this.renderHomeScreen();
+                    this.renderDebitScreen();
                 }, (error) => {
-                    console.error("Error loading sales:", error);
+                    console.error("Error loading debits:", error);
                 });
             },
             
@@ -1681,8 +1528,8 @@
                 // Show welcome message
                 setTimeout(() => {
                     const message = this.demoMode 
-                        ? 'Welcome to Demo Mode! Add products and make sales to test the app.' 
-                        : 'Welcome to Kirana Manager! Start by adding your first product.';
+                        ? 'Welcome to Demo Mode! Add credit and debit entries to track your store finances.' 
+                        : 'Welcome to Kirana Manager! Start by adding your first transaction.';
                     this.showNotification('Welcome!', message, 'info');
                 }, 1000);
             },
@@ -1709,8 +1556,8 @@
                                 address: "Enter your store address",
                                 gst: "22XXXXX1234X1X5"
                             },
-                            products: {},
-                            sales: {}
+                            credits: {},
+                            debits: {}
                         };
                         
                         return database.ref(`users/${user.uid}`).set(userData);
@@ -1866,14 +1713,6 @@
                 document.getElementById('user-email').textContent = this.currentUser ? this.currentUser.email : 'demo@kirana.com';
             },
             
-            // Update profile UI
-            updateProfileUI: function() {
-                document.getElementById('store-name').value = this.data.storeInfo.name || '';
-                document.getElementById('owner-name').value = this.data.storeInfo.owner || '';
-                document.getElementById('store-address').value = this.data.storeInfo.address || '';
-                document.getElementById('gst-number').value = this.data.storeInfo.gst || '';
-            },
-            
             // Setup event listeners
             setupEventListeners: function() {
                 // Login form
@@ -1928,19 +1767,13 @@
                     document.getElementById('login-error').style.display = 'none';
                 });
                 
-                // Demo login button
-                document.getElementById('demo-login-btn')?.addEventListener('click', () => {
-                    this.useDemoCredentials();
-                    document.getElementById('login-submit-btn').click();
-                });
-                
                 // Logout button
                 document.getElementById('logout-btn').addEventListener('click', () => {
                     this.handleLogout();
                 });
                 
                 // Bottom navigation
-                document.querySelectorAll('.nav-item, .nav-center').forEach(item => {
+                document.querySelectorAll('.nav-item').forEach(item => {
                     item.addEventListener('click', (e) => {
                         e.preventDefault();
                         const screenId = item.getAttribute('data-screen');
@@ -1948,114 +1781,47 @@
                     });
                 });
                 
-                // Inventory tabs
-                document.querySelectorAll('#inventory-tabs .tab').forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        const tabId = tab.getAttribute('data-tab');
-                        this.switchInventoryTab(tabId);
-                    });
-                });
-                
-                // Add product form
-                document.getElementById('save-product-btn').addEventListener('click', () => this.addProduct());
-                document.getElementById('add-manual-btn').addEventListener('click', () => this.switchScreen('add-screen'));
-                
-                // Quantity controls - Add Product Screen
-                const qtyInput = document.getElementById('qty-input');
-                document.getElementById('decrease-qty').addEventListener('click', () => {
-                    let currentQty = parseInt(qtyInput.value) || 0;
-                    if (currentQty > 0) {
-                        qtyInput.value = currentQty - 1;
-                    }
-                });
-                
-                document.getElementById('increase-qty').addEventListener('click', () => {
-                    let currentQty = parseInt(qtyInput.value) || 0;
-                    qtyInput.value = currentQty + 1;
-                });
-                
-                // Validate qty input
-                qtyInput.addEventListener('input', () => {
-                    let value = parseInt(qtyInput.value);
-                    if (isNaN(value) || value < 0) {
-                        qtyInput.value = 0;
-                    }
-                });
-                
-                // Quantity controls - Sale Screen
-                const saleQtyInput = document.getElementById('sale-qty-input');
-                document.getElementById('decrease-sale-qty').addEventListener('click', () => {
-                    let currentQty = parseInt(saleQtyInput.value) || 1;
-                    if (currentQty > 1) {
-                        saleQtyInput.value = currentQty - 1;
-                        this.updateSaleTotal();
-                    }
-                });
-                
-                document.getElementById('increase-sale-qty').addEventListener('click', () => {
-                    let currentQty = parseInt(saleQtyInput.value) || 1;
-                    saleQtyInput.value = currentQty + 1;
-                    this.updateSaleTotal();
-                });
-                
-                // Validate sale qty input
-                saleQtyInput.addEventListener('input', () => {
-                    let value = parseInt(saleQtyInput.value);
-                    if (isNaN(value) || value < 1) {
-                        saleQtyInput.value = 1;
-                    }
-                    this.updateSaleTotal();
-                });
-                
-                // Payment method buttons
-                document.querySelectorAll('[data-payment]').forEach(btn => {
+                // Payment method buttons for credit
+                document.querySelectorAll('#credit-screen [data-payment]').forEach(btn => {
                     btn.addEventListener('click', (e) => {
-                        document.querySelectorAll('[data-payment]').forEach(b => b.classList.remove('active'));
+                        document.querySelectorAll('#credit-screen [data-payment]').forEach(b => b.classList.remove('active'));
                         e.target.classList.add('active');
                     });
                 });
                 
-                // Complete sale
-                document.getElementById('complete-sale-btn').addEventListener('click', () => this.completeSale());
-                
-                // Product selection in sales screen
-                document.getElementById('sale-product').addEventListener('change', () => this.updateSaleTotal());
-                
-                // Quick action buttons
-                document.getElementById('scan-barcode-btn').addEventListener('click', () => {
-                    this.showNotification('Barcode Scanner', 'Point camera at barcode to add product', 'info');
+                // Payment method buttons for debit
+                document.querySelectorAll('#debit-screen [data-payment]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('#debit-screen [data-payment]').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                    });
                 });
                 
-                document.getElementById('voice-input-btn').addEventListener('click', () => {
-                    this.showNotification('Voice Input', 'Speak product name in Hindi or English', 'info');
+                // Add credit button
+                document.getElementById('add-credit-btn').addEventListener('click', () => this.addCredit());
+                
+                // Add debit button
+                document.getElementById('add-debit-btn').addEventListener('click', () => this.addDebit());
+                
+                // Quick add credit buttons
+                document.querySelectorAll('.quick-add-btn.credit').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const amount = e.currentTarget.getAttribute('data-amount');
+                        document.getElementById('credit-amount').value = amount;
+                        document.getElementById('credit-category').value = 'Sales';
+                        document.getElementById('credit-description').value = 'Quick Sale';
+                        this.switchScreen('credit-screen');
+                    });
                 });
                 
-                document.getElementById('quick-sale-btn').addEventListener('click', () => {
-                    this.switchScreen('sales-screen');
-                });
-                
-                // Search functionality
-                document.getElementById('search-btn').addEventListener('click', () => this.searchInventory());
-                document.getElementById('inventory-search').addEventListener('input', () => this.searchInventory());
-                
-                // Store info save
-                document.getElementById('save-store-info').addEventListener('click', () => this.saveStoreInfo());
-                
-                // Data management
-                document.getElementById('export-data').addEventListener('click', () => this.exportData());
-                document.getElementById('import-data').addEventListener('click', () => this.importData());
-                document.getElementById('clear-data').addEventListener('click', () => this.clearData());
-                
-                // Modal controls
-                document.getElementById('close-modal').addEventListener('click', () => this.closeModal());
-                document.getElementById('close-edit-modal').addEventListener('click', () => this.closeEditModal());
-                
-                // Close modal when clicking outside
-                document.querySelectorAll('.modal').forEach(modal => {
-                    modal.addEventListener('click', (e) => {
-                        if (e.target === modal) {
-                            modal.classList.remove('active');
-                        }
+                // Quick add debit buttons
+                document.querySelectorAll('.quick-add-btn.debit').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const amount = e.currentTarget.getAttribute('data-amount');
+                        document.getElementById('debit-amount').value = amount;
+                        document.getElementById('debit-category').value = 'Purchase';
+                        document.getElementById('debit-description').value = 'Quick Purchase';
+                        this.switchScreen('debit-screen');
                     });
                 });
             },
@@ -2075,1247 +1841,452 @@
                     item.classList.remove('active');
                 });
                 
-                if (screenId !== 'add-screen') {
-                    document.querySelector(`[data-screen="${screenId}"]`).classList.add('active');
-                }
+                document.querySelector(`[data-screen="${screenId}"]`).classList.add('active');
                 
                 // Update screen content
                 switch(screenId) {
                     case 'home-screen':
                         this.renderHomeScreen();
                         break;
-                    case 'inventory-screen':
-                        this.renderInventoryScreen();
+                    case 'credit-screen':
+                        this.renderCreditScreen();
                         break;
-                    case 'sales-screen':
-                        this.renderSalesScreen();
-                        break;
-                    case 'insights-screen':
-                        this.renderInsightsScreen();
-                        break;
-                    case 'profile-screen':
-                        this.updateProfileUI();
+                    case 'debit-screen':
+                        this.renderDebitScreen();
                         break;
                 }
             },
             
-            // Switch inventory tabs
-            switchInventoryTab: function(tabId) {
-                // Update tabs
-                document.querySelectorAll('#inventory-tabs .tab').forEach(tab => {
-                    tab.classList.remove('active');
-                });
+            // Add credit transaction
+            addCredit: function() {
+                const amount = parseFloat(document.getElementById('credit-amount').value);
+                const category = document.getElementById('credit-category').value;
+                const description = document.getElementById('credit-description').value.trim();
+                const customer = document.getElementById('credit-customer').value.trim();
+                const paymentMethod = document.querySelector('#credit-screen [data-payment].active').getAttribute('data-payment');
+                let date = document.getElementById('credit-date').value;
                 
-                document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
-                
-                // Render inventory with filter
-                this.renderInventoryScreen(tabId);
-            },
-            
-            // Add new product
-            addProduct: function() {
-                const name = document.getElementById('product-name').value.trim();
-                const category = document.getElementById('product-category').value;
-                const purchasePrice = parseFloat(document.getElementById('purchase-price').value);
-                const sellingPrice = parseFloat(document.getElementById('selling-price').value);
-                const quantity = parseInt(document.getElementById('qty-input').value) || 0;
-                const minStock = parseInt(document.getElementById('min-stock').value);
-                const unit = document.getElementById('unit').value;
-                const expiryDate = document.getElementById('expiry-date').value;
+                // Use today's date if not specified
+                if (!date) date = this.getTodayDate();
                 
                 // Validation
-                if (!name || !category || !purchasePrice || !sellingPrice || !minStock) {
-                    this.showNotification('Error', 'Please fill all required fields (*)', 'warning');
+                if (!amount || amount <= 0) {
+                    this.showNotification('Error', 'Please enter a valid amount', 'warning');
                     return;
                 }
                 
-                if (sellingPrice <= purchasePrice) {
-                    this.showNotification('Warning', 'Selling price should be higher than purchase price', 'warning');
+                if (!category) {
+                    this.showNotification('Error', 'Please select a category', 'warning');
                     return;
                 }
                 
-                // Create new product object
-                const newProduct = {
-                    name: name,
+                if (!description) {
+                    this.showNotification('Error', 'Please enter a description', 'warning');
+                    return;
+                }
+                
+                // Create new credit object
+                const newCredit = {
+                    amount: amount,
                     category: category,
-                    purchasePrice: purchasePrice,
-                    sellingPrice: sellingPrice,
-                    quantity: quantity,
-                    minStock: minStock,
-                    unit: unit,
-                    expiryDate: expiryDate || null,
-                    addedDate: this.getTodayDate()
-                };
-                
-                if (this.demoMode) {
-                    // Add to demo data
-                    const productId = 'demo-' + Date.now();
-                    this.data.products.push({
-                        id: productId,
-                        ...newProduct
-                    });
-                    this.saveDemoData();
-                    
-                    // Clear form
-                    document.getElementById('product-name').value = '';
-                    document.getElementById('product-category').value = '';
-                    document.getElementById('purchase-price').value = '';
-                    document.getElementById('selling-price').value = '';
-                    document.getElementById('min-stock').value = '';
-                    document.getElementById('expiry-date').value = '';
-                    document.getElementById('qty-input').value = '1';
-                    
-                    // Refresh inventory display immediately
-                    this.renderInventoryScreen();
-                    this.renderHomeScreen();
-                    
-                    // Show success message
-                    this.showNotification('Success', `${name} has been added to inventory`, 'success');
-                    
-                    // Switch to inventory screen
-                    setTimeout(() => {
-                        this.switchScreen('inventory-screen');
-                    }, 1500);
-                } else {
-                    // Add to Firebase
-                    if (!this.userId) {
-                        this.showNotification('Error', 'Please login to add products', 'danger');
-                        return;
-                    }
-                    
-                    const newProductRef = database.ref(`users/${this.userId}/products`).push();
-                    newProductRef.set(newProduct)
-                        .then(() => {
-                            // Clear form
-                            document.getElementById('product-name').value = '';
-                            document.getElementById('product-category').value = '';
-                            document.getElementById('purchase-price').value = '';
-                            document.getElementById('selling-price').value = '';
-                            document.getElementById('min-stock').value = '';
-                            document.getElementById('expiry-date').value = '';
-                            document.getElementById('qty-input').value = '1';
-                            
-                            // Show success message
-                            this.showNotification('Success', `${name} has been added to inventory`, 'success');
-                            
-                            // Switch to inventory screen
-                            setTimeout(() => {
-                                this.switchScreen('inventory-screen');
-                            }, 1500);
-                        })
-                        .catch((error) => {
-                            console.error("Error adding product:", error);
-                            this.showNotification('Error', 'Failed to add product. Please try again.', 'danger');
-                        });
-                }
-            },
-            
-            // Complete a sale
-            completeSale: function() {
-                const productSelect = document.getElementById('sale-product');
-                const productId = productSelect.value;
-                const quantity = parseInt(document.getElementById('sale-qty-input').value) || 1;
-                const customerName = document.getElementById('customer-name').value.trim();
-                const paymentMethod = document.querySelector('[data-payment].active').getAttribute('data-payment');
-                
-                // Validation
-                if (!productId) {
-                    this.showNotification('Error', 'Please select a product', 'warning');
-                    return;
-                }
-                
-                // Find product
-                const product = this.data.products.find(p => p.id === productId);
-                if (!product) {
-                    this.showNotification('Error', 'Product not found', 'danger');
-                    return;
-                }
-                
-                // Check stock
-                if (product.quantity < quantity) {
-                    this.showNotification('Error', `Only ${product.quantity} ${product.unit} available in stock`, 'danger');
-                    return;
-                }
-                
-                // Calculate total
-                const total = product.sellingPrice * quantity;
-                
-                // Create sale record
-                const newSale = {
-                    productId: productId,
-                    productName: product.name,
-                    quantity: quantity,
-                    price: product.sellingPrice,
-                    total: total,
+                    description: description,
+                    customer: customer || null,
                     paymentMethod: paymentMethod,
-                    customerName: customerName,
-                    date: this.getTodayDate(),
+                    date: date,
                     timestamp: Date.now()
                 };
                 
                 if (this.demoMode) {
-                    // Update product quantity in demo data
-                    const productIndex = this.data.products.findIndex(p => p.id === productId);
-                    if (productIndex !== -1) {
-                        this.data.products[productIndex].quantity -= quantity;
-                    }
-                    
-                    // Add sale to demo data
-                    const saleId = 'demo-sale-' + Date.now();
-                    this.data.sales.push({
-                        id: saleId,
-                        ...newSale
+                    // Add to demo data
+                    const creditId = 'demo-credit-' + Date.now();
+                    this.data.credits.push({
+                        id: creditId,
+                        ...newCredit
                     });
-                    
                     this.saveDemoData();
                     
-                    // Reset form
-                    productSelect.value = '';
-                    document.getElementById('customer-name').value = '';
-                    document.getElementById('sale-qty-input').value = '1';
-                    document.querySelectorAll('[data-payment]').forEach(b => b.classList.remove('active'));
-                    document.querySelector('[data-payment="cash"]').classList.add('active');
-                    document.getElementById('sale-total').textContent = '0';
+                    // Clear form
+                    document.getElementById('credit-amount').value = '';
+                    document.getElementById('credit-description').value = '';
+                    document.getElementById('credit-customer').value = '';
                     
                     // Refresh displays
-                    this.renderInventoryScreen();
-                    this.renderSalesScreen();
                     this.renderHomeScreen();
+                    this.renderCreditScreen();
                     
                     // Show success message
-                    this.showNotification('Sale Complete', `${product.name} sold for ₹${total}`, 'success');
+                    this.showNotification('Credit Added', `₹${amount} credit added successfully`, 'success');
+                    
+                    // Switch to home screen after a delay
+                    setTimeout(() => {
+                        this.switchScreen('home-screen');
+                    }, 1500);
                 } else {
-                    // Add sale to Firebase
+                    // Add to Firebase
                     if (!this.userId) {
-                        this.showNotification('Error', 'Please login to make sales', 'danger');
+                        this.showNotification('Error', 'Please login to add credit', 'danger');
                         return;
                     }
                     
-                    const newSaleRef = database.ref(`users/${this.userId}/sales`).push();
-                    newSaleRef.set(newSale)
+                    const newCreditRef = database.ref(`users/${this.userId}/credits`).push();
+                    newCreditRef.set(newCredit)
                         .then(() => {
-                            // Update product quantity in Firebase
-                            const newQuantity = product.quantity - quantity;
-                            return database.ref(`users/${this.userId}/products/${productId}`).update({
-                                quantity: newQuantity
-                            });
-                        })
-                        .then(() => {
-                            // Reset form
-                            productSelect.value = '';
-                            document.getElementById('customer-name').value = '';
-                            document.getElementById('sale-qty-input').value = '1';
-                            document.querySelectorAll('[data-payment]').forEach(b => b.classList.remove('active'));
-                            document.querySelector('[data-payment="cash"]').classList.add('active');
-                            document.getElementById('sale-total').textContent = '0';
+                            // Clear form
+                            document.getElementById('credit-amount').value = '';
+                            document.getElementById('credit-description').value = '';
+                            document.getElementById('credit-customer').value = '';
                             
                             // Show success message
-                            this.showNotification('Sale Complete', `${product.name} sold for ₹${total}`, 'success');
+                            this.showNotification('Credit Added', `₹${amount} credit added successfully`, 'success');
+                            
+                            // Switch to home screen after a delay
+                            setTimeout(() => {
+                                this.switchScreen('home-screen');
+                            }, 1500);
                         })
                         .catch((error) => {
-                            console.error("Error completing sale:", error);
-                            this.showNotification('Error', 'Failed to complete sale. Please try again.', 'danger');
+                            console.error("Error adding credit:", error);
+                            this.showNotification('Error', 'Failed to add credit. Please try again.', 'danger');
                         });
                 }
             },
             
-            // Update sale total when product or quantity changes
-            updateSaleTotal: function() {
-                const productSelect = document.getElementById('sale-product');
-                const productId = productSelect.value;
-                const quantity = parseInt(document.getElementById('sale-qty-input').value) || 1;
+            // Add debit transaction
+            addDebit: function() {
+                const amount = parseFloat(document.getElementById('debit-amount').value);
+                const category = document.getElementById('debit-category').value;
+                const description = document.getElementById('debit-description').value.trim();
+                const vendor = document.getElementById('debit-vendor').value.trim();
+                const paymentMethod = document.querySelector('#debit-screen [data-payment].active').getAttribute('data-payment');
+                let date = document.getElementById('debit-date').value;
                 
-                if (!productId) {
-                    document.getElementById('sale-total').textContent = '0';
+                // Use today's date if not specified
+                if (!date) date = this.getTodayDate();
+                
+                // Validation
+                if (!amount || amount <= 0) {
+                    this.showNotification('Error', 'Please enter a valid amount', 'warning');
                     return;
                 }
                 
-                const product = this.data.products.find(p => p.id === productId);
-                if (product) {
-                    const total = product.sellingPrice * quantity;
-                    document.getElementById('sale-total').textContent = total;
+                if (!category) {
+                    this.showNotification('Error', 'Please select a category', 'warning');
+                    return;
                 }
-            },
-            
-            // Search inventory
-            searchInventory: function() {
-                const searchTerm = document.getElementById('inventory-search').value.toLowerCase();
-                const activeTab = document.querySelector('#inventory-tabs .tab.active').getAttribute('data-tab');
-                this.renderInventoryScreen(activeTab, searchTerm);
-            },
-            
-            // Save store information
-            saveStoreInfo: function() {
-                const storeInfo = {
-                    name: document.getElementById('store-name').value,
-                    owner: document.getElementById('owner-name').value,
-                    address: document.getElementById('store-address').value,
-                    gst: document.getElementById('gst-number').value,
-                    email: this.currentUser ? this.currentUser.email : 'demo@kirana.com'
+                
+                if (!description) {
+                    this.showNotification('Error', 'Please enter a description', 'warning');
+                    return;
+                }
+                
+                // Create new debit object
+                const newDebit = {
+                    amount: amount,
+                    category: category,
+                    description: description,
+                    vendor: vendor || null,
+                    paymentMethod: paymentMethod,
+                    date: date,
+                    timestamp: Date.now()
                 };
                 
                 if (this.demoMode) {
-                    this.data.storeInfo = storeInfo;
+                    // Add to demo data
+                    const debitId = 'demo-debit-' + Date.now();
+                    this.data.debits.push({
+                        id: debitId,
+                        ...newDebit
+                    });
                     this.saveDemoData();
-                    this.updateUserInfo();
-                    this.showNotification('Success', 'Store information saved successfully', 'success');
+                    
+                    // Clear form
+                    document.getElementById('debit-amount').value = '';
+                    document.getElementById('debit-description').value = '';
+                    document.getElementById('debit-vendor').value = '';
+                    
+                    // Refresh displays
+                    this.renderHomeScreen();
+                    this.renderDebitScreen();
+                    
+                    // Show success message
+                    this.showNotification('Debit Added', `₹${amount} debit added successfully`, 'success');
+                    
+                    // Switch to home screen after a delay
+                    setTimeout(() => {
+                        this.switchScreen('home-screen');
+                    }, 1500);
                 } else {
+                    // Add to Firebase
                     if (!this.userId) {
-                        this.showNotification('Error', 'Please login to save store info', 'danger');
+                        this.showNotification('Error', 'Please login to add debit', 'danger');
                         return;
                     }
                     
-                    database.ref(`users/${this.userId}/storeInfo`).set(storeInfo)
+                    const newDebitRef = database.ref(`users/${this.userId}/debits`).push();
+                    newDebitRef.set(newDebit)
                         .then(() => {
-                            this.data.storeInfo = storeInfo;
-                            this.updateUserInfo();
-                            this.showNotification('Success', 'Store information saved successfully', 'success');
-                        })
-                        .catch((error) => {
-                            console.error("Error saving store info:", error);
-                            this.showNotification('Error', 'Failed to save store information', 'danger');
-                        });
-                }
-            },
-            
-            // Export data as JSON
-            exportData: function() {
-                const exportData = {
-                    storeInfo: this.data.storeInfo,
-                    products: this.data.products,
-                    sales: this.data.sales
-                };
-                
-                const dataStr = JSON.stringify(exportData, null, 2);
-                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-                
-                const exportFileDefaultName = `kirana-data-${this.getTodayDate()}.json`;
-                
-                const linkElement = document.createElement('a');
-                linkElement.setAttribute('href', dataUri);
-                linkElement.setAttribute('download', exportFileDefaultName);
-                linkElement.click();
-                
-                this.showNotification('Export Complete', 'Data exported successfully', 'success');
-            },
-            
-            // Import data from JSON file
-            importData: function() {
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = '.json';
-                
-                input.onchange = (e) => {
-                    const file = e.target.files[0];
-                    const reader = new FileReader();
-                    
-                    reader.onload = (event) => {
-                        try {
-                            const importedData = JSON.parse(event.target.result);
+                            // Clear form
+                            document.getElementById('debit-amount').value = '';
+                            document.getElementById('debit-description').value = '';
+                            document.getElementById('debit-vendor').value = '';
                             
-                            // Show confirmation dialog
-                            if (confirm('This will overwrite your current data. Continue?')) {
-                                if (this.demoMode) {
-                                    // Import to demo data
-                                    this.data.storeInfo = importedData.storeInfo || this.data.storeInfo;
-                                    this.data.products = importedData.products || [];
-                                    this.data.sales = importedData.sales || [];
-                                    this.saveDemoData();
-                                    
-                                    this.showNotification('Import Complete', 'Data imported successfully', 'success');
-                                    
-                                    // Refresh all screens
-                                    this.renderHomeScreen();
-                                    this.renderInventoryScreen();
-                                    this.renderSalesScreen();
-                                    this.renderInsightsScreen();
-                                } else {
-                                    if (!this.userId) {
-                                        this.showNotification('Error', 'Please login to import data', 'danger');
-                                        return;
-                                    }
-                                    
-                                    // Import store info
-                                    if (importedData.storeInfo) {
-                                        database.ref(`users/${this.userId}/storeInfo`).set(importedData.storeInfo);
-                                    }
-                                    
-                                    // Import products
-                                    if (importedData.products) {
-                                        const productsRef = database.ref(`users/${this.userId}/products`);
-                                        productsRef.remove(); // Clear existing products
-                                        
-                                        importedData.products.forEach(product => {
-                                            const productCopy = { ...product };
-                                            delete productCopy.id; // Remove id for new push
-                                            productsRef.push().set(productCopy);
-                                        });
-                                    }
-                                    
-                                    // Import sales
-                                    if (importedData.sales) {
-                                        const salesRef = database.ref(`users/${this.userId}/sales`);
-                                        salesRef.remove(); // Clear existing sales
-                                        
-                                        importedData.sales.forEach(sale => {
-                                            const saleCopy = { ...sale };
-                                            delete saleCopy.id; // Remove id for new push
-                                            salesRef.push().set(saleCopy);
-                                        });
-                                    }
-                                    
-                                    this.showNotification('Import Complete', 'Data imported successfully', 'success');
-                                }
-                            }
-                        } catch (error) {
-                            console.error("Import error:", error);
-                            this.showNotification('Import Error', 'Invalid data file', 'danger');
-                        }
-                    };
-                    
-                    reader.readAsText(file);
-                };
-                
-                input.click();
-            },
-            
-            // Clear all data
-            clearData: function() {
-                if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
-                    if (this.demoMode) {
-                        this.data.products = [];
-                        this.data.sales = [];
-                        this.saveDemoData();
-                        
-                        this.showNotification('Data Cleared', 'All data has been cleared', 'info');
-                        
-                        // Refresh all screens
-                        this.renderHomeScreen();
-                        this.renderInventoryScreen();
-                        this.renderSalesScreen();
-                        this.renderInsightsScreen();
-                    } else {
-                        if (!this.userId) {
-                            this.showNotification('Error', 'Please login to clear data', 'danger');
-                            return;
-                        }
-                        
-                        // Clear products
-                        database.ref(`users/${this.userId}/products`).remove();
-                        
-                        // Clear sales
-                        database.ref(`users/${this.userId}/sales`).remove();
-                        
-                        this.showNotification('Data Cleared', 'All data has been cleared', 'info');
-                    }
-                }
-            },
-            
-            // Show product details modal
-            showProductModal: function(productId) {
-                const product = this.data.products.find(p => p.id === productId);
-                if (!product) return;
-                
-                const modalBody = document.getElementById('modal-body');
-                const status = this.getProductStatus(product);
-                
-                modalBody.innerHTML = `
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="margin-bottom: 10px;">${product.name}</h3>
-                        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                            <span style="background-color: ${status.color}; color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.8rem;">
-                                ${status.text}
-                            </span>
-                            <span style="background-color: var(--gray-light); padding: 3px 10px; border-radius: 20px; font-size: 0.8rem;">
-                                ${product.category}
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
-                        <div>
-                            <div style="font-size: 0.9rem; color: var(--gray);">Current Stock</div>
-                            <div style="font-size: 1.5rem; font-weight: 700;">${product.quantity} ${product.unit}</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.9rem; color: var(--gray);">Minimum Stock</div>
-                            <div style="font-size: 1.5rem; font-weight: 700;">${product.minStock} ${product.unit}</div>
-                        </div>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
-                        <div>
-                            <div style="font-size: 0.9rem; color: var(--gray);">Purchase Price</div>
-                            <div style="font-size: 1.2rem; font-weight: 700;" class="currency">${product.purchasePrice}</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.9rem; color: var(--gray);">Selling Price</div>
-                            <div style="font-size: 1.2rem; font-weight: 700;" class="currency">${product.sellingPrice}</div>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-bottom: 15px;">
-                        <div style="font-size: 0.9rem; color: var(--gray);">Profit Margin</div>
-                        <div style="font-size: 1.2rem; font-weight: 700; color: var(--success);">
-                            ₹${(product.sellingPrice - product.purchasePrice).toFixed(2)} (${((product.sellingPrice - product.purchasePrice) / product.purchasePrice * 100).toFixed(1)}%)
-                        </div>
-                    </div>
-                    
-                    ${product.expiryDate ? `
-                        <div style="margin-bottom: 15px;">
-                            <div style="font-size: 0.9rem; color: var(--gray);">Expiry Date</div>
-                            <div style="font-size: 1.1rem; font-weight: 600;">${product.expiryDate}</div>
-                        </div>
-                    ` : ''}
-                    
-                    <div>
-                        <div style="font-size: 0.9rem; color: var(--gray);">Added Date</div>
-                        <div style="font-size: 1.1rem; font-weight: 600;">${product.addedDate}</div>
-                    </div>
-                `;
-                
-                // Set up modal buttons
-                document.getElementById('edit-product-btn').onclick = () => this.showEditModal(productId);
-                document.getElementById('sell-product-btn').onclick = () => {
-                    this.closeModal();
-                    this.switchScreen('sales-screen');
-                    document.getElementById('sale-product').value = productId;
-                    this.updateSaleTotal();
-                };
-                document.getElementById('delete-product-btn').onclick = () => this.deleteProduct(productId);
-                
-                // Show modal
-                document.getElementById('product-modal').classList.add('active');
-            },
-            
-            // Show edit product modal
-            showEditModal: function(productId) {
-                const product = this.data.products.find(p => p.id === productId);
-                if (!product) return;
-                
-                const editModalBody = document.getElementById('edit-modal-body');
-                
-                editModalBody.innerHTML = `
-                    <div class="form-group">
-                        <label class="form-label">Product Name</label>
-                        <input type="text" class="form-input" id="edit-product-name" value="${product.name}">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Category</label>
-                        <select class="select-input" id="edit-product-category">
-                            <option value="Rice & Grains" ${product.category === 'Rice & Grains' ? 'selected' : ''}>Rice & Grains</option>
-                            <option value="Cooking Oil" ${product.category === 'Cooking Oil' ? 'selected' : ''}>Cooking Oil</option>
-                            <option value="Dairy" ${product.category === 'Dairy' ? 'selected' : ''}>Dairy</option>
-                            <option value="Snacks" ${product.category === 'Snacks' ? 'selected' : ''}>Snacks</option>
-                            <option value="Beverages" ${product.category === 'Beverages' ? 'selected' : ''}>Beverages</option>
-                            <option value="Detergents" ${product.category === 'Detergents' ? 'selected' : ''}>Detergents</option>
-                            <option value="Personal Care" ${product.category === 'Personal Care' ? 'selected' : ''}>Personal Care</option>
-                            <option value="Spices" ${product.category === 'Spices' ? 'selected' : ''}>Spices</option>
-                            <option value="Pulses" ${product.category === 'Pulses' ? 'selected' : ''}>Pulses</option>
-                            <option value="Other" ${product.category === 'Other' ? 'selected' : ''}>Other</option>
-                        </select>
-                    </div>
-                    
-                    <div class="input-group">
-                        <div class="form-group" style="flex: 1;">
-                            <label class="form-label">Purchase Price (₹)</label>
-                            <input type="number" class="form-input" id="edit-purchase-price" value="${product.purchasePrice}" step="0.01">
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label class="form-label">Selling Price (₹)</label>
-                            <input type="number" class="form-input" id="edit-selling-price" value="${product.sellingPrice}" step="0.01">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Current Quantity</label>
-                        <div class="qty-control-container">
-                            <div class="qty-control">
-                                <button type="button" class="qty-btn" id="edit-decrease-qty">-</button>
-                                <input type="number" class="qty-input" id="edit-quantity" value="${product.quantity}" min="0" step="1">
-                                <button type="button" class="qty-btn" id="edit-increase-qty">+</button>
-                            </div>
-                            <div class="qty-unit">
-                                <select class="select-input" style="width: auto; padding: 8px 12px;" id="edit-unit">
-                                    <option value="kg" ${product.unit === 'kg' ? 'selected' : ''}>Kg</option>
-                                    <option value="packet" ${product.unit === 'packet' ? 'selected' : ''}>Packet</option>
-                                    <option value="bottle" ${product.unit === 'bottle' ? 'selected' : ''}>Bottle</option>
-                                    <option value="piece" ${product.unit === 'piece' ? 'selected' : ''}>Piece</option>
-                                    <option value="liter" ${product.unit === 'liter' ? 'selected' : ''}>Liter</option>
-                                    <option value="dozen" ${product.unit === 'dozen' ? 'selected' : ''}>Dozen</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Minimum Stock Threshold</label>
-                        <input type="number" class="form-input" id="edit-min-stock" value="${product.minStock}">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Expiry Date</label>
-                        <input type="date" class="form-input" id="edit-expiry-date" value="${product.expiryDate || ''}">
-                    </div>
-                    
-                    <button class="btn btn-primary btn-block" id="save-edit-btn">
-                        <i class="fas fa-save"></i> Save Changes
-                    </button>
-                `;
-                
-                // Set up quantity controls for edit modal
-                const editQtyInput = document.getElementById('edit-quantity');
-                document.getElementById('edit-decrease-qty').onclick = () => {
-                    let currentQty = parseInt(editQtyInput.value) || 0;
-                    if (currentQty > 0) {
-                        editQtyInput.value = currentQty - 1;
-                    }
-                };
-                
-                document.getElementById('edit-increase-qty').onclick = () => {
-                    let currentQty = parseInt(editQtyInput.value) || 0;
-                    editQtyInput.value = currentQty + 1;
-                };
-                
-                // Validate edit qty input
-                editQtyInput.addEventListener('input', () => {
-                    let value = parseInt(editQtyInput.value);
-                    if (isNaN(value) || value < 0) {
-                        editQtyInput.value = 0;
-                    }
-                });
-                
-                // Set up save button
-                document.getElementById('save-edit-btn').onclick = () => this.saveProductEdit(productId);
-                
-                // Close product modal and open edit modal
-                this.closeModal();
-                document.getElementById('edit-modal').classList.add('active');
-            },
-            
-            // Save product edit
-            saveProductEdit: function(productId) {
-                const product = this.data.products.find(p => p.id === productId);
-                if (!product) return;
-                
-                const updatedProduct = {
-                    name: document.getElementById('edit-product-name').value,
-                    category: document.getElementById('edit-product-category').value,
-                    purchasePrice: parseFloat(document.getElementById('edit-purchase-price').value),
-                    sellingPrice: parseFloat(document.getElementById('edit-selling-price').value),
-                    quantity: parseInt(document.getElementById('edit-quantity').value) || 0,
-                    unit: document.getElementById('edit-unit').value,
-                    minStock: parseInt(document.getElementById('edit-min-stock').value),
-                    expiryDate: document.getElementById('edit-expiry-date').value || null,
-                    addedDate: product.addedDate // Keep original added date
-                };
-                
-                if (this.demoMode) {
-                    // Update in demo data
-                    const productIndex = this.data.products.findIndex(p => p.id === productId);
-                    if (productIndex !== -1) {
-                        this.data.products[productIndex] = {
-                            id: productId,
-                            ...updatedProduct
-                        };
-                        this.saveDemoData();
-                        this.closeEditModal();
-                        this.showNotification('Success', 'Product updated successfully', 'success');
-                        this.renderInventoryScreen();
-                        this.renderHomeScreen();
-                    }
-                } else {
-                    // Update in Firebase
-                    if (!this.userId) {
-                        this.showNotification('Error', 'Please login to edit product', 'danger');
-                        return;
-                    }
-                    
-                    database.ref(`users/${this.userId}/products/${productId}`).update(updatedProduct)
-                        .then(() => {
-                            this.closeEditModal();
-                            this.showNotification('Success', 'Product updated successfully', 'success');
+                            // Show success message
+                            this.showNotification('Debit Added', `₹${amount} debit added successfully`, 'success');
+                            
+                            // Switch to home screen after a delay
+                            setTimeout(() => {
+                                this.switchScreen('home-screen');
+                            }, 1500);
                         })
                         .catch((error) => {
-                            console.error("Error updating product:", error);
-                            this.showNotification('Error', 'Failed to update product', 'danger');
+                            console.error("Error adding debit:", error);
+                            this.showNotification('Error', 'Failed to add debit. Please try again.', 'danger');
                         });
                 }
             },
             
-            // Delete product
-            deleteProduct: function(productId) {
-                if (confirm('Are you sure you want to delete this product?')) {
-                    if (this.demoMode) {
-                        // Remove from demo data
-                        this.data.products = this.data.products.filter(p => p.id !== productId);
-                        this.saveDemoData();
-                        this.closeModal();
-                        this.renderInventoryScreen();
-                        this.renderHomeScreen();
-                        this.showNotification('Deleted', 'Product removed from inventory', 'info');
-                    } else {
-                        if (!this.userId) {
-                            this.showNotification('Error', 'Please login to delete product', 'danger');
-                            return;
-                        }
-                        
-                        database.ref(`users/${this.userId}/products/${productId}`).remove()
-                            .then(() => {
-                                this.closeModal();
-                                this.showNotification('Deleted', 'Product removed from inventory', 'info');
-                            })
-                            .catch((error) => {
-                                console.error("Error deleting product:", error);
-                                this.showNotification('Error', 'Failed to delete product', 'danger');
-                            });
-                    }
-                }
-            },
-            
-            // Close modals
-            closeModal: function() {
-                document.getElementById('product-modal').classList.remove('active');
-            },
-            
-            closeEditModal: function() {
-                document.getElementById('edit-modal').classList.remove('active');
-            },
-            
-            // Get product status
-            getProductStatus: function(product) {
-                if (product.quantity === 0) {
-                    return { text: 'Out of Stock', color: 'var(--danger)' };
-                } else if (product.quantity <= product.minStock) {
-                    return { text: 'Low Stock', color: 'var(--warning)' };
-                } else if (product.expiryDate) {
-                    const expiryDate = new Date(product.expiryDate);
-                    const today = new Date();
-                    const daysUntilExpiry = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
-                    
-                    if (daysUntilExpiry <= 7) {
-                        return { text: 'Expiring Soon', color: '#f97316' };
-                    }
-                }
-                
-                return { text: 'In Stock', color: 'var(--success)' };
-            },
-            
-            // Render home screen
+            // Render home screen (Analysis)
             renderHomeScreen: function() {
                 // Update current date
                 this.updateCurrentDate();
                 
-                // Calculate stats
-                const totalProducts = this.data.products.length;
-                const todaySales = this.data.sales
-                    .filter(sale => sale.date === this.getTodayDate())
-                    .reduce((sum, sale) => sum + sale.total, 0);
+                // Get today's date
+                const today = this.getTodayDate();
                 
-                const monthlyProfit = this.calculateMonthlyProfit();
-                const lowStockCount = this.data.products.filter(p => p.quantity <= p.minStock && p.quantity > 0).length;
-                const outOfStockCount = this.data.products.filter(p => p.quantity === 0).length;
+                // Calculate today's totals
+                const todayCredits = this.data.credits
+                    .filter(credit => credit.date === today)
+                    .reduce((sum, credit) => sum + credit.amount, 0);
+                
+                const todayDebits = this.data.debits
+                    .filter(debit => debit.date === today)
+                    .reduce((sum, debit) => sum + debit.amount, 0);
+                
+                const todayProfit = todayCredits - todayDebits;
+                
+                // Calculate total totals
+                const totalCredits = this.data.credits
+                    .reduce((sum, credit) => sum + credit.amount, 0);
+                
+                const totalDebits = this.data.debits
+                    .reduce((sum, debit) => sum + debit.amount, 0);
+                
+                const totalProfit = totalCredits - totalDebits;
+                
+                // Calculate monthly totals
+                const currentMonth = this.getCurrentMonth();
+                const monthlyCredits = this.data.credits
+                    .filter(credit => credit.date.startsWith(currentMonth))
+                    .reduce((sum, credit) => sum + credit.amount, 0);
+                
+                const monthlyDebits = this.data.debits
+                    .filter(debit => debit.date.startsWith(currentMonth))
+                    .reduce((sum, debit) => sum + debit.amount, 0);
+                
+                const monthlyProfit = monthlyCredits - monthlyDebits;
+                
+                const monthTransactions = this.data.credits
+                    .filter(credit => credit.date.startsWith(currentMonth)).length +
+                    this.data.debits.filter(debit => debit.date.startsWith(currentMonth)).length;
+                
+                // Update summary
+                document.getElementById('today-credit').textContent = todayCredits.toFixed(0);
+                document.getElementById('today-debit').textContent = todayDebits.toFixed(0);
+                document.getElementById('today-profit').textContent = todayProfit.toFixed(0);
                 
                 // Update stats
-                document.getElementById('total-products').textContent = totalProducts;
-                document.getElementById('today-sales').textContent = todaySales.toFixed(0);
+                document.getElementById('total-credit').textContent = totalCredits.toFixed(0);
+                document.getElementById('total-debit').textContent = totalDebits.toFixed(0);
                 document.getElementById('monthly-profit').textContent = monthlyProfit.toFixed(0);
-                document.getElementById('low-stock-count').textContent = lowStockCount + outOfStockCount;
-                document.getElementById('low-stock-badge').textContent = `${lowStockCount + outOfStockCount} Items`;
+                document.getElementById('month-transactions').textContent = monthTransactions;
                 
-                // Update sales trend
-                const yesterdaySales = this.data.sales
-                    .filter(sale => sale.date === this.getYesterdayDate())
-                    .reduce((sum, sale) => sum + sale.total, 0);
-                
-                const salesTrendElement = document.getElementById('sales-trend');
-                if (yesterdaySales > 0) {
-                    const change = ((todaySales - yesterdaySales) / yesterdaySales * 100).toFixed(1);
-                    if (todaySales > yesterdaySales) {
-                        salesTrendElement.innerHTML = `<i class="fas fa-arrow-up"></i> ${change}% from yesterday`;
-                        salesTrendElement.className = 'stat-trend trend-up';
-                    } else {
-                        salesTrendElement.innerHTML = `<i class="fas fa-arrow-down"></i> ${Math.abs(change)}% from yesterday`;
-                        salesTrendElement.className = 'stat-trend trend-down';
-                    }
-                } else {
-                    salesTrendElement.innerHTML = `<i class="fas fa-chart-line"></i> Start selling`;
-                    salesTrendElement.className = 'stat-trend trend-up';
-                }
-                
-                // Update low stock items
-                const lowStockItemsContainer = document.getElementById('low-stock-items');
-                const lowStockItems = this.data.products.filter(p => p.quantity <= p.minStock);
-                
-                if (lowStockItems.length > 0) {
-                    let html = '';
-                    lowStockItems.slice(0, 5).forEach(product => {
-                        const status = this.getProductStatus(product);
-                        html += `
-                            <div class="product-item ${status.text === 'Low Stock' ? 'low-stock' : 'out-of-stock'}" onclick="KiranaApp.showProductModal('${product.id}')">
-                                <div class="product-info">
-                                    <h4>${product.name}</h4>
-                                    <p>Category: ${product.category} | Min: ${product.minStock} ${product.unit}</p>
-                                </div>
-                                <div class="product-qty" style="color: ${status.color};">${product.quantity} ${product.unit}</div>
-                            </div>
-                        `;
-                    });
-                    
-                    lowStockItemsContainer.innerHTML = html;
-                } else {
-                    lowStockItemsContainer.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-check-circle empty-state-icon"></i>
-                            <div class="empty-state-title">All items are well stocked</div>
-                            <p>Add products to get started</p>
-                        </div>
-                    `;
-                }
+                // Update recent transactions
+                this.updateRecentTransactions();
                 
                 // Update charts
                 this.updateHomeCharts();
             },
             
-            // Render inventory screen
-            renderInventoryScreen: function(filter = 'all', searchTerm = '') {
-                const inventoryContainer = document.getElementById('inventory-items');
-                const loader = document.getElementById('inventory-loader');
+            // Render credit screen
+            renderCreditScreen: function() {
+                // Get today's date
+                const today = this.getTodayDate();
                 
-                // Hide loader if it exists
-                if (loader) {
-                    loader.style.display = 'none';
-                }
+                // Filter today's credits
+                const todayCredits = this.data.credits.filter(credit => credit.date === today);
                 
-                let filteredProducts = this.data.products;
+                // Update count
+                document.getElementById('today-credit-count').textContent = todayCredits.length;
                 
-                // Apply filter
-                if (filter === 'low') {
-                    filteredProducts = filteredProducts.filter(p => p.quantity <= p.minStock && p.quantity > 0);
-                } else if (filter === 'expiring') {
-                    filteredProducts = filteredProducts.filter(p => {
-                        if (!p.expiryDate) return false;
-                        const expiryDate = new Date(p.expiryDate);
-                        const today = new Date();
-                        const daysUntilExpiry = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
-                        return daysUntilExpiry <= 30 && daysUntilExpiry > 0;
-                    });
-                }
+                // Display today's credits
+                const creditListContainer = document.getElementById('today-credit-list');
                 
-                // Apply search
-                if (searchTerm) {
-                    filteredProducts = filteredProducts.filter(p => 
-                        p.name.toLowerCase().includes(searchTerm) || 
-                        p.category.toLowerCase().includes(searchTerm)
-                    );
-                }
-                
-                if (filteredProducts.length > 0) {
+                if (todayCredits.length > 0) {
                     let html = '';
-                    filteredProducts.forEach(product => {
-                        const status = this.getProductStatus(product);
-                        html += `
-                            <div class="product-item ${status.text === 'Low Stock' ? 'low-stock' : status.text === 'Out of Stock' ? 'out-of-stock' : status.text === 'Expiring Soon' ? 'expiring-soon' : ''}" onclick="KiranaApp.showProductModal('${product.id}')">
-                                <div class="product-info">
-                                    <h4>${product.name}</h4>
-                                    <p>Category: ${product.category} | Price: ₹${product.sellingPrice}/${product.unit}</p>
-                                    <p style="font-size: 0.8rem; margin-top: 5px;">
-                                        <span style="background-color: ${status.color}; color: white; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem;">
-                                            ${status.text}
-                                        </span>
-                                    </p>
-                                </div>
-                                <div class="product-qty" style="color: ${status.color};">${product.quantity} ${product.unit}</div>
-                            </div>
-                        `;
-                    });
-                    
-                    inventoryContainer.innerHTML = html;
-                } else {
-                    inventoryContainer.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-box-open empty-state-icon"></i>
-                            <div class="empty-state-title">No products found</div>
-                            <p>${searchTerm ? 'Try a different search term' : 'Add your first product using the "+" button below'}</p>
-                        </div>
-                    `;
-                }
-            },
-            
-            // Render sales screen
-            renderSalesScreen: function() {
-                // Update product dropdown
-                const productSelect = document.getElementById('sale-product');
-                productSelect.innerHTML = '<option value="">Choose a product...</option>';
-                
-                this.data.products.forEach(product => {
-                    if (product.quantity > 0) {
-                        const option = document.createElement('option');
-                        option.value = product.id;
-                        option.textContent = `${product.name} (₹${product.sellingPrice}/${product.unit}) - Stock: ${product.quantity} ${product.unit}`;
-                        productSelect.appendChild(option);
-                    }
-                });
-                
-                // Update recent sales
-                const recentSalesContainer = document.getElementById('recent-sales');
-                const todaySales = this.data.sales.filter(sale => sale.date === this.getTodayDate());
-                
-                if (todaySales.length > 0) {
-                    let html = '';
-                    todaySales.slice(-5).reverse().forEach(sale => {
+                    todayCredits.slice().reverse().forEach(credit => {
                         const paymentIcons = {
                             cash: 'fa-money-bill',
                             upi: 'fa-mobile-alt',
-                            credit: 'fa-credit-card'
+                            card: 'fa-credit-card',
+                            online: 'fa-globe'
                         };
                         
                         html += `
-                            <div class="product-item">
-                                <div class="product-info">
-                                    <h4>${sale.productName}</h4>
-                                    <p>Qty: ${sale.quantity} | <i class="fas ${paymentIcons[sale.paymentMethod]}" style="margin: 0 5px;"></i> ${sale.paymentMethod.toUpperCase()}</p>
-                                    ${sale.customerName ? `<p style="font-size: 0.8rem;">Customer: ${sale.customerName}</p>` : ''}
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <h4>${credit.description}</h4>
+                                    <p>${credit.category} | <i class="fas ${paymentIcons[credit.paymentMethod]}" style="margin: 0 5px;"></i> ${credit.paymentMethod.toUpperCase()}</p>
+                                    ${credit.customer ? `<p style="font-size: 0.8rem;">Customer: ${credit.customer}</p>` : ''}
                                 </div>
-                                <div style="text-align: right;">
-                                    <div style="font-weight: 700;" class="currency">${sale.total}</div>
-                                    <div style="font-size: 0.9rem; color: var(--success);">${sale.quantity} units</div>
-                                </div>
+                                <div class="transaction-amount credit currency">${credit.amount}</div>
                             </div>
                         `;
                     });
                     
-                    recentSalesContainer.innerHTML = html;
+                    creditListContainer.innerHTML = html;
                 } else {
-                    recentSalesContainer.innerHTML = `
+                    creditListContainer.innerHTML = `
                         <div class="empty-state">
-                            <i class="fas fa-shopping-cart empty-state-icon"></i>
-                            <div class="empty-state-title">No sales yet today</div>
-                            <p>Make your first sale!</p>
+                            <i class="fas fa-arrow-down empty-state-icon"></i>
+                            <div class="empty-state-title">No credit entries today</div>
+                            <p>Add your first credit entry above</p>
                         </div>
                     `;
                 }
-                
-                // Update sales chart
-                this.updateSalesChart();
             },
             
-            // Render insights screen
-            renderInsightsScreen: function() {
-                // Generate AI insights
-                this.generateAIInsights();
+            // Render debit screen
+            renderDebitScreen: function() {
+                // Get today's date
+                const today = this.getTodayDate();
                 
-                // Update charts
-                this.updateProfitChart();
-                this.updateCategoryChart();
-            },
-            
-            // Generate AI insights
-            generateAIInsights: function() {
-                const insightsContainer = document.getElementById('ai-insights');
+                // Filter today's debits
+                const todayDebits = this.data.debits.filter(debit => debit.date === today);
                 
-                // If no products or sales
-                if (this.data.products.length === 0) {
-                    insightsContainer.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-chart-line empty-state-icon"></i>
-                            <div class="empty-state-title">No insights yet</div>
-                            <p>Add products and make sales to get insights</p>
-                        </div>
-                    `;
-                    return;
-                }
+                // Update count
+                document.getElementById('today-debit-count').textContent = todayDebits.length;
                 
-                let insights = [];
+                // Display today's debits
+                const debitListContainer = document.getElementById('today-debit-list');
                 
-                // Low stock insights
-                const lowStockProducts = this.data.products.filter(p => p.quantity <= p.minStock && p.quantity > 0);
-                if (lowStockProducts.length > 0) {
-                    const product = lowStockProducts[0];
-                    insights.push({
-                        type: 'warning',
-                        title: 'Restock Alert',
-                        text: `${product.name} is running low (${product.quantity} ${product.unit} left). Consider restocking soon.`,
-                        icon: 'fa-exclamation-triangle'
-                    });
-                }
-                
-                // Profit margin insights
-                const lowMarginProducts = this.data.products.filter(p => {
-                    const margin = ((p.sellingPrice - p.purchasePrice) / p.purchasePrice * 100);
-                    return margin < 10;
-                });
-                
-                if (lowMarginProducts.length > 0) {
-                    const product = lowMarginProducts[0];
-                    const margin = ((product.sellingPrice - product.purchasePrice) / product.purchasePrice * 100).toFixed(1);
-                    insights.push({
-                        type: 'danger',
-                        title: 'Low Margin Alert',
-                        text: `${product.name} has only ${margin}% profit margin. Consider increasing price by ₹${Math.ceil(product.purchasePrice * 0.05)}.`,
-                        icon: 'fa-chart-line'
-                    });
-                }
-                
-                // Best selling insight
-                if (this.data.sales.length > 0) {
-                    const productSales = {};
-                    this.data.sales.forEach(sale => {
-                        if (!productSales[sale.productName]) {
-                            productSales[sale.productName] = 0;
-                        }
-                        productSales[sale.productName] += sale.quantity;
-                    });
-                    
-                    const bestSeller = Object.keys(productSales).reduce((a, b) => productSales[a] > productSales[b] ? a : b);
-                    insights.push({
-                        type: 'success',
-                        title: 'Best Seller',
-                        text: `${bestSeller} is your top-selling product. Keep good stock levels for this item.`,
-                        icon: 'fa-trophy'
-                    });
-                }
-                
-                // Expiring soon insight
-                const expiringProducts = this.data.products.filter(p => {
-                    if (!p.expiryDate) return false;
-                    const expiryDate = new Date(p.expiryDate);
-                    const today = new Date();
-                    const daysUntilExpiry = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
-                    return daysUntilExpiry <= 30 && daysUntilExpiry > 0;
-                });
-                
-                if (expiringProducts.length > 0) {
-                    const product = expiringProducts[0];
-                    const expiryDate = new Date(product.expiryDate);
-                    const today = new Date();
-                    const daysUntilExpiry = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
-                    
-                    insights.push({
-                        type: 'warning',
-                        title: 'Expiry Alert',
-                        text: `${product.name} expires in ${daysUntilExpiry} days. Consider offering a discount to sell quickly.`,
-                        icon: 'fa-clock'
-                    });
-                }
-                
-                // Add default insight if none generated
-                if (insights.length === 0 && this.data.products.length > 0) {
-                    insights.push({
-                        type: 'success',
-                        title: 'Business Health',
-                        text: 'Your inventory is well-stocked and profit margins look good. Keep up the good work!',
-                        icon: 'fa-heart'
-                    });
-                }
-                
-                // If still no insights
-                if (insights.length === 0) {
-                    insightsContainer.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-chart-line empty-state-icon"></i>
-                            <div class="empty-state-title">No insights yet</div>
-                            <p>Add products and make sales to get insights</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                // Render insights
-                let html = '';
-                insights.forEach(insight => {
-                    html += `
-                        <div class="insight-card ${insight.type}">
-                            <div class="insight-title">
-                                <i class="fas ${insight.icon}" style="color: var(--${insight.type});"></i>
-                                <span>${insight.title}</span>
+                if (todayDebits.length > 0) {
+                    let html = '';
+                    todayDebits.slice().reverse().forEach(debit => {
+                        const paymentIcons = {
+                            cash: 'fa-money-bill',
+                            upi: 'fa-mobile-alt',
+                            card: 'fa-credit-card',
+                            online: 'fa-globe'
+                        };
+                        
+                        html += `
+                            <div class="transaction-item debit">
+                                <div class="transaction-info">
+                                    <h4>${debit.description}</h4>
+                                    <p>${debit.category} | <i class="fas ${paymentIcons[debit.paymentMethod]}" style="margin: 0 5px;"></i> ${debit.paymentMethod.toUpperCase()}</p>
+                                    ${debit.vendor ? `<p style="font-size: 0.8rem;">Vendor: ${debit.vendor}</p>` : ''}
+                                </div>
+                                <div class="transaction-amount debit currency">${debit.amount}</div>
                             </div>
-                            <p class="insight-text">${insight.text}</p>
+                        `;
+                    });
+                    
+                    debitListContainer.innerHTML = html;
+                } else {
+                    debitListContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-arrow-up empty-state-icon"></i>
+                            <div class="empty-state-title">No debit entries today</div>
+                            <p>Add your first debit entry above</p>
                         </div>
                     `;
-                });
+                }
+            },
+            
+            // Update recent transactions on home screen
+            updateRecentTransactions: function() {
+                const container = document.getElementById('recent-transactions');
                 
-                insightsContainer.innerHTML = html;
+                // Combine and sort credits and debits by timestamp
+                const allTransactions = [
+                    ...this.data.credits.map(t => ({ ...t, type: 'credit' })),
+                    ...this.data.debits.map(t => ({ ...t, type: 'debit' }))
+                ].sort((a, b) => b.timestamp - a.timestamp).slice(0, 5);
+                
+                if (allTransactions.length > 0) {
+                    let html = '';
+                    allTransactions.forEach(transaction => {
+                        const isCredit = transaction.type === 'credit';
+                        const paymentIcons = {
+                            cash: 'fa-money-bill',
+                            upi: 'fa-mobile-alt',
+                            card: 'fa-credit-card',
+                            online: 'fa-globe'
+                        };
+                        
+                        html += `
+                            <div class="transaction-item ${isCredit ? '' : 'debit'}">
+                                <div class="transaction-info">
+                                    <h4>${transaction.description}</h4>
+                                    <p>${transaction.category} | ${transaction.date} | <i class="fas ${paymentIcons[transaction.paymentMethod]}" style="margin: 0 5px;"></i> ${transaction.paymentMethod.toUpperCase()}</p>
+                                </div>
+                                <div class="transaction-amount ${isCredit ? 'credit' : 'debit'} currency">${transaction.amount}</div>
+                            </div>
+                        `;
+                    });
+                    
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-exchange-alt empty-state-icon"></i>
+                            <div class="empty-state-title">No transactions yet</div>
+                            <p>Add your first credit or debit transaction</p>
+                        </div>
+                    `;
+                }
             },
             
             // Setup charts
             setupCharts: function() {
-                // Destroy existing charts
-                Object.values(this.charts).forEach(chart => {
-                    if (chart && chart.destroy) {
-                        chart.destroy();
-                    }
-                });
-                
-                this.charts = {};
-                
-                // Initialize charts
                 this.updateHomeCharts();
-                this.updateSalesChart();
-                this.updateProfitChart();
-                this.updateCategoryChart();
             },
             
             // Update home screen charts
             updateHomeCharts: function() {
-                // Sales trend chart (last 7 days)
-                const salesCtx = document.getElementById('salesChart');
-                if (salesCtx) {
+                // Income vs Expense chart (last 7 days)
+                const incomeExpenseCtx = document.getElementById('incomeExpenseChart');
+                if (incomeExpenseCtx) {
                     // Destroy existing chart
-                    if (this.charts.salesChart) {
-                        this.charts.salesChart.destroy();
+                    if (this.charts.incomeExpenseChart) {
+                        this.charts.incomeExpenseChart.destroy();
                     }
                     
                     const last7Days = this.getLast7Days();
-                    const salesData = last7Days.map(day => {
-                        const daySales = this.data.sales.filter(sale => sale.date === day);
-                        return daySales.reduce((sum, sale) => sum + sale.total, 0);
+                    const incomeData = last7Days.map(day => {
+                        const dayCredits = this.data.credits.filter(credit => credit.date === day);
+                        return dayCredits.reduce((sum, credit) => sum + credit.amount, 0);
                     });
                     
-                    this.charts.salesChart = new Chart(salesCtx, {
-                        type: 'line',
-                        data: {
-                            labels: last7Days.map(day => this.formatDateForDisplay(day)),
-                            datasets: [{
-                                label: 'Daily Sales (₹)',
-                                data: salesData,
-                                backgroundColor: 'rgba(79, 70, 229, 0.1)',
-                                borderColor: 'rgb(79, 70, 229)',
-                                borderWidth: 3,
-                                fill: true,
-                                tension: 0.4
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        callback: function(value) {
-                                            return '₹' + value;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
-                
-                // Stock status chart
-                const stockCtx = document.getElementById('stockChart');
-                if (stockCtx) {
-                    // Destroy existing chart
-                    if (this.charts.stockChart) {
-                        this.charts.stockChart.destroy();
-                    }
-                    
-                    const inStock = this.data.products.filter(p => p.quantity > p.minStock).length;
-                    const lowStock = this.data.products.filter(p => p.quantity <= p.minStock && p.quantity > 0).length;
-                    const outOfStock = this.data.products.filter(p => p.quantity === 0).length;
-                    
-                    this.charts.stockChart = new Chart(stockCtx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: ['In Stock', 'Low Stock', 'Out of Stock'],
-                            datasets: [{
-                                data: [inStock, lowStock, outOfStock],
-                                backgroundColor: [
-                                    'rgb(16, 185, 129)',
-                                    'rgb(245, 158, 11)',
-                                    'rgb(239, 68, 68)'
-                                ],
-                                borderWidth: 0,
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom'
-                                }
-                            }
-                        }
-                    });
-                }
-            },
-            
-            // Update sales chart
-            updateSalesChart: function() {
-                const dailySalesCtx = document.getElementById('dailySalesChart');
-                if (dailySalesCtx) {
-                    // Destroy existing chart
-                    if (this.charts.dailySalesChart) {
-                        this.charts.dailySalesChart.destroy();
-                    }
-                    
-                    const last7Days = this.getLast7Days();
-                    const salesData = last7Days.map(day => {
-                        const daySales = this.data.sales.filter(sale => sale.date === day);
-                        return daySales.reduce((sum, sale) => sum + sale.total, 0);
+                    const expenseData = last7Days.map(day => {
+                        const dayDebits = this.data.debits.filter(debit => debit.date === day);
+                        return dayDebits.reduce((sum, debit) => sum + debit.amount, 0);
                     });
                     
-                    this.charts.dailySalesChart = new Chart(dailySalesCtx, {
+                    this.charts.incomeExpenseChart = new Chart(incomeExpenseCtx, {
                         type: 'bar',
                         data: {
                             labels: last7Days.map(day => this.formatDateForDisplay(day)),
-                            datasets: [{
-                                label: 'Sales (₹)',
-                                data: salesData,
-                                backgroundColor: 'rgba(16, 185, 129, 0.7)',
-                                borderColor: 'rgb(16, 185, 129)',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        callback: function(value) {
-                                            return '₹' + value;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
-            },
-            
-            // Update profit chart
-            updateProfitChart: function() {
-                const profitCtx = document.getElementById('profitChart');
-                if (profitCtx) {
-                    // Destroy existing chart
-                    if (this.charts.profitChart) {
-                        this.charts.profitChart.destroy();
-                    }
-                    
-                    // For demo, generate data for last 6 months
-                    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-                    const incomeData = months.map(() => Math.floor(Math.random() * 50000) + 100000);
-                    const expenseData = months.map(() => Math.floor(Math.random() * 30000) + 50000);
-                    
-                    this.charts.profitChart = new Chart(profitCtx, {
-                        type: 'bar',
-                        data: {
-                            labels: months,
                             datasets: [
                                 {
-                                    label: 'Income',
+                                    label: 'Income (Credit)',
                                     data: incomeData,
                                     backgroundColor: 'rgba(16, 185, 129, 0.7)',
                                     borderColor: 'rgb(16, 185, 129)',
                                     borderWidth: 1
                                 },
                                 {
-                                    label: 'Expenses',
+                                    label: 'Expenses (Debit)',
                                     data: expenseData,
                                     backgroundColor: 'rgba(239, 68, 68, 0.7)',
                                     borderColor: 'rgb(239, 68, 68)',
@@ -3331,7 +2302,7 @@
                                     beginAtZero: true,
                                     ticks: {
                                         callback: function(value) {
-                                            return '₹' + (value/1000) + 'k';
+                                            return '₹' + value;
                                         }
                                     }
                                 }
@@ -3344,10 +2315,8 @@
                         }
                     });
                 }
-            },
-            
-            // Update category chart
-            updateCategoryChart: function() {
+                
+                // Category chart
                 const categoryCtx = document.getElementById('categoryChart');
                 if (categoryCtx) {
                     // Destroy existing chart
@@ -3355,68 +2324,44 @@
                         this.charts.categoryChart.destroy();
                     }
                     
-                    // Calculate category-wise sales
-                    const categorySales = {};
-                    this.data.sales.forEach(sale => {
-                        const product = this.data.products.find(p => p.id === sale.productId);
-                        if (product) {
-                            if (!categorySales[product.category]) {
-                                categorySales[product.category] = 0;
-                            }
-                            categorySales[product.category] += sale.total;
+                    // Calculate category-wise totals for credits
+                    const creditCategories = {};
+                    this.data.credits.forEach(credit => {
+                        if (!creditCategories[credit.category]) {
+                            creditCategories[credit.category] = 0;
                         }
+                        creditCategories[credit.category] += credit.amount;
                     });
                     
-                    // If no sales data, show placeholder
-                    if (Object.keys(categorySales).length === 0) {
-                        const categories = ['Rice & Grains', 'Cooking Oil', 'Snacks', 'Dairy', 'Beverages'];
-                        const salesData = categories.map(() => Math.floor(Math.random() * 5000) + 1000);
-                        
-                        this.charts.categoryChart = new Chart(categoryCtx, {
-                            type: 'pie',
-                            data: {
-                                labels: categories,
-                                datasets: [{
-                                    data: salesData,
-                                    backgroundColor: [
-                                        'rgba(79, 70, 229, 0.8)',
-                                        'rgba(16, 185, 129, 0.8)',
-                                        'rgba(245, 158, 11, 0.8)',
-                                        'rgba(239, 68, 68, 0.8)',
-                                        'rgba(139, 92, 246, 0.8)'
-                                    ],
-                                    borderWidth: 0,
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: {
-                                        position: 'bottom'
-                                    }
-                                }
-                            }
-                        });
-                        return;
-                    }
+                    // Calculate category-wise totals for debits
+                    const debitCategories = {};
+                    this.data.debits.forEach(debit => {
+                        if (!debitCategories[debit.category]) {
+                            debitCategories[debit.category] = 0;
+                        }
+                        debitCategories[debit.category] += debit.amount;
+                    });
                     
-                    const categories = Object.keys(categorySales);
-                    const salesData = Object.values(categorySales);
+                    // Combine top categories
+                    const allCategories = { ...creditCategories, ...debitCategories };
+                    const sortedCategories = Object.keys(allCategories)
+                        .sort((a, b) => allCategories[b] - allCategories[a])
+                        .slice(0, 5);
+                    
+                    const categoryData = sortedCategories.map(cat => allCategories[cat]);
                     
                     this.charts.categoryChart = new Chart(categoryCtx, {
-                        type: 'pie',
+                        type: 'doughnut',
                         data: {
-                            labels: categories,
+                            labels: sortedCategories,
                             datasets: [{
-                                data: salesData,
+                                data: categoryData,
                                 backgroundColor: [
                                     'rgba(79, 70, 229, 0.8)',
                                     'rgba(16, 185, 129, 0.8)',
                                     'rgba(245, 158, 11, 0.8)',
                                     'rgba(239, 68, 68, 0.8)',
-                                    'rgba(139, 92, 246, 0.8)',
-                                    'rgba(14, 165, 233, 0.8)'
+                                    'rgba(139, 92, 246, 0.8)'
                                 ],
                                 borderWidth: 0,
                             }]
@@ -3440,10 +2385,9 @@
                 return today.toISOString().split('T')[0];
             },
             
-            getYesterdayDate: function() {
-                const yesterday = new Date();
-                yesterday.setDate(yesterday.getDate() - 1);
-                return yesterday.toISOString().split('T')[0];
+            getCurrentMonth: function() {
+                const today = new Date();
+                return today.toISOString().substring(0, 7); // YYYY-MM
             },
             
             getLast7Days: function() {
@@ -3465,21 +2409,6 @@
                 const today = new Date();
                 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                 document.getElementById('current-date').textContent = today.toLocaleDateString('en-IN', options);
-            },
-            
-            calculateMonthlyProfit: function() {
-                // For demo, calculate profit from sales
-                let totalProfit = 0;
-                
-                this.data.sales.forEach(sale => {
-                    const product = this.data.products.find(p => p.id === sale.productId);
-                    if (product) {
-                        const profitPerUnit = product.sellingPrice - product.purchasePrice;
-                        totalProfit += profitPerUnit * sale.quantity;
-                    }
-                });
-                
-                return totalProfit;
             },
             
             // Show notification
